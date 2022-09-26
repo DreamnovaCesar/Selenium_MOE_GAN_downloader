@@ -94,6 +94,47 @@ class MakeGirlMOE:
 
         Driver.close()
 
+    def get_images_waifus_settings(self) -> None:
+        
+        Path_chrome_driver:str = r"C:\Users\Cesar\Dropbox\PC\Desktop\chromedriver.exe"
+        
+        # *
+        XPATH_image = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[1]/div/div[1]/div/div/img'
+        XPATH_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[1]/div/button'
+
+        # *
+        Time_wait_value:int = 10
+        Header_list:list = []
+
+        # * Webdriver chrome activate
+        Driver = webdriver.Chrome(Path_chrome_driver)
+        Driver.get(self.URL)
+
+        # * Waiting time
+        Driver.implicitly_wait(Time_wait_value)
+        
+        time.sleep(10)
+        
+        for i in range(self.Number):
+
+            Button_click = Driver.find_element(By.XPATH, XPATH_button)
+            Button_click.click()
+            # *
+            time.sleep(0.2)
+
+            Image = Driver.find_element(By.XPATH, XPATH_image)
+            src = Image.get_attribute('src')
+            
+            Image_name = "Image_{}.png".format(i)
+            Image_folder = os.path.join(r"C:\Users\Cesar\Dropbox\PC\Desktop\Waifus", Image_name)
+
+            urllib.request.urlretrieve(src, Image_folder)
+
+            # *
+            time.sleep(0.1)
+
+        Driver.close()
+
 def main():
     
     Waifu = MakeGirlMOE(url = URL, waifus = 1000)
