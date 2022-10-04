@@ -110,9 +110,6 @@ class MakeGirlMOE:
             List_options.append(Option.text)
 
         # *
-        #print(List_options)
-
-        print(List_options)
 
         Option_index = List_options.index(Option_picked)
         
@@ -122,9 +119,6 @@ class MakeGirlMOE:
     
     @staticmethod
     def model_on_off(Driver, XPATH_path_on: string, XPATH_path_random: string, XPATH_path_off: string, Option_picked: string) -> None:
-        
-        # *
-        List_options = []
 
         # *
         if(Option_picked == 'ON'):
@@ -184,13 +178,14 @@ class MakeGirlMOE:
         
     def get_images_waifus_settings(self) -> None:
         
-        Path_chrome_driver:str = r"C:\Users\Cesar\Dropbox\PC\Desktop\chromedriver.exe"
+        # * chromedriver path
+        Path_chrome_driver = r"C:\Users\Cesar\Dropbox\PC\Desktop\chromedriver.exe"
         
-        # *
+        # * Dropdown items model
         XPATH_model_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[2]/div/div[2]/div/div/button'
         XPATH_model_open = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[2]/div/div[2]/div/div/ul'
 
-        # *
+        # * Dropdown items
         XPATH_hair_color_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[2]/div/div[3]/div[1]/div/button'
         XPATH_hair_color_open = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[2]/div/div[3]/div[1]/div/ul'
 
@@ -200,7 +195,7 @@ class MakeGirlMOE:
         XPATH_Eye_color_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[2]/div/div[3]/div[3]/div/button'
         XPATH_Eye_color_open = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[2]/div/div[3]/div[3]/div/ul'
 
-        # *
+        # * On, off and random buttons.
         XPATH_dark_skin_off_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[2]/div/div[3]/div[4]/div/button[1]'
         XPATH_dark_skin_random_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[2]/div/div[3]/div[4]/div/button[2]'
         XPATH_dark_skin_on_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[2]/div/div[3]/div[4]/div/button[3]'
@@ -242,13 +237,13 @@ class MakeGirlMOE:
             # * Waiting time
             Driver.implicitly_wait(self.Initial)
 
-            # *
+            # * Function dropdown used
             self.model_dropdown(Driver, XPATH_model_button, XPATH_model_open, self.Model[k])
             self.model_dropdown(Driver, XPATH_hair_color_button, XPATH_hair_color_open, self.Hair_color[k])
             self.model_dropdown(Driver, XPATH_hair_style_button, XPATH_hair_style_open, self.Hair_style[k])
             self.model_dropdown(Driver, XPATH_Eye_color_button, XPATH_Eye_color_open, self.Eye_color[k])
 
-            # *
+            # * Function on off used
             self.model_on_off(Driver, XPATH_dark_skin_off_button, XPATH_dark_skin_random_button, XPATH_dark_skin_on_button, self.Dark_sin[k])
             self.model_on_off(Driver, XPATH_blush_off_button, XPATH_blush_random_button, XPATH_blush_on_button,  self.Blush[k])
             self.model_on_off(Driver, XPATH_smile_off_button, XPATH_smile_random_button, XPATH_smile_on_button, self.Smile[k])
@@ -257,19 +252,24 @@ class MakeGirlMOE:
             self.model_on_off(Driver, XPATH_ribbon_off_button, XPATH_ribbon_random_button, XPATH_ribbon_on_button, self.Ribbon[k])
             self.model_on_off(Driver, XPATH_glasses_off_button, XPATH_glasses_random_button, XPATH_glasses_on_button, self.Glasses[k])
 
+            # * Initial time
             time.sleep(self.Initial)
 
+            # * Instance epoch
             for i in range(self.Epochs[k]):
-
+                
+                # *
                 Button_click = Driver.find_element(By.XPATH, XPATH_image_button)
                 Button_click.click()
 
-                # *
+                # * Interval times
                 time.sleep(self.Time_interval)
 
+                # * Read image
                 Image = Driver.find_element(By.XPATH, XPATH_image)
                 src = Image.get_attribute('src')
                 
+                # * Direction exist
                 Exist_dir = os.path.isdir('{}/Girl_{}_{}_{}'.format(self.Folder[k], self.Hair_color[k], self.Hair_style[k], self.Eye_color[k])) 
 
                 if Exist_dir == False:
@@ -278,22 +278,28 @@ class MakeGirlMOE:
                 else:
                     New_folder = '{}/Girl_{}_{}_{}'.format(self.Folder[k], self.Hair_color[k], self.Hair_style[k], self.Eye_color[k])
 
+                # * Name girl images
                 Image_name = "Girl_Image_{}.png".format(i)
                 Image_folder = os.path.join(New_folder, Image_name)
-
+                
+                # * Download image from website
                 urllib.request.urlretrieve(src, Image_folder)
 
-                # *
+                # * Interval times
                 time.sleep(self.Time_interval)
 
+            # * Close Google chrome 
             Driver.close()
 
 def main():
     
+    # * Waifu CSV with data
     CSV_path = r"C:\Users\Cesar\Dropbox\PC\Desktop\Waifus_csv\Waifus_data_csv.csv"
 
+    # * Class instance
     Waifu = MakeGirlMOE(csv = CSV_path)
-
+    
+    # * Class instance functions settings
     Waifu.get_images_waifus_settings()
 
 if __name__ == "__main__":
