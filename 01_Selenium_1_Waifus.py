@@ -83,7 +83,7 @@ class MakeGirlMOE:
         self.CSV = New_value
     
     @CSV_property.deleter
-    def Folder_property(self):
+    def CSV_property(self):
         print("Deleting CSV...")
         del self.CSV
 
@@ -136,7 +136,7 @@ class MakeGirlMOE:
         else:   
             pass
 
-    def get_images_waifus(self) -> None:
+    def get_images_waifus_random(self) -> None:
         
         Path_chrome_driver:str = r"C:\Users\Cesar\Dropbox\PC\Desktop\chromedriver.exe"
         
