@@ -1,70 +1,81 @@
 import os
-import string
-from tkinter import Button
-from jmespath import search
-from matplotlib.pyplot import text
-
-import requests
-from bs4 import BeautifulSoup
-import pandas as pd
-
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-import datetime
-import numpy as np
-
 import time
+import string
+import pandas as pd
 
 import urllib.request
 
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+from functools import wraps
 
 #URL = r"https://make.girls.moe/#/"
-#Cotta_user_name = 'aAa cutefatb0y#fat'
 
-class MakeGirlMOE:
+# ?
+
+class Utilities(object):
+
+    # ? Get the execution time of each function
+    @staticmethod  
+    def timer_func(func):  
+        @wraps(func)  
+        def wrapper(self, *args, **kwargs):  
+
+            # * Obtain the executed time of the function
+
+            Asterisk = 60;
+
+            t1 = time.time();
+            result = func(self, *args, **kwargs);
+            t2 = time.time();
+
+            print("\n");
+            print("*" * Asterisk);
+            print('Function {} executed in {:.4f}'.format(func.__name__, t2 - t1));
+            print("*" * Asterisk);
+            print("\n");
+
+            return result
+        return wrapper
+
+class MakeGirlMOE(Utilities):
 
     def __init__(self, **kwargs) -> None:
         
         # * Instance attributes
-        self.CSV = kwargs.get('csv', None)
+        self.__CSV = kwargs.get('csv', None)
 
         # * Folder attribute (ValueError, TypeError)
-        if self.CSV == None:
+        if self.__CSV == None:
             raise ValueError("Folder does not exist") #! Alert
             
-        with open(self.CSV) as CSV:
+        with open(self.__CSV) as CSV:
         
             Data = pd.read_csv(CSV)
 
-            self.Model = Data['Model'].tolist()
-            self.Hair_color = Data['Hair color'].tolist()
-            self.Hair_style = Data['Hair style'].tolist()
-            self.Eye_color = Data['Eye color'].tolist()
-            self.Dark_sin = Data['Dark sin'].tolist()
-            self.Blush = Data['Blush'].tolist()
-            self.Smile = Data['Smile'].tolist()
-            self.Open_mouth = Data['Open mouth'].tolist()
-            self.Hat = Data['Hat'].tolist()
-            self.Ribbon = Data['Ribbon'].tolist()
-            self.Glasses = Data['Glasses'].tolist()
-            self.Folder = Data['Folder'].tolist()
-            self.URL = Data['URL'].tolist()
-            self.Epochs = Data['Epochs'].tolist()
+            self.__Model = Data['Model'].tolist()
+            self.__Hair_color = Data['Hair color'].tolist()
+            self.__Hair_style = Data['Hair style'].tolist()
+            self.__Eye_color = Data['Eye color'].tolist()
+            self.__Dark_sin = Data['Dark sin'].tolist()
+            self.__Blush = Data['Blush'].tolist()
+            self.__Smile = Data['Smile'].tolist()
+            self.__Open_mouth = Data['Open mouth'].tolist()
+            self.__Hat = Data['Hat'].tolist()
+            self.__Ribbon = Data['Ribbon'].tolist()
+            self.__Glasses = Data['Glasses'].tolist()
+            self.__Folder = Data['Folder'].tolist()
+            self.__URL = Data['URL'].tolist()
+            self.__Epochs = Data['Epochs'].tolist()
 
             #self.Number = kwargs.get('waifus', 50)
-            self.Time_interval = 0.05
-            self.Initial = 5
+            self.__Time_interval = 0.05
+            self.__Initial = 5
 
     def __repr__(self):
 
-        kwargs_info = "{}".format(self.CSV)
+        kwargs_info = "{}".format(self.__CSV)
 
         return kwargs_info
 
@@ -74,18 +85,18 @@ class MakeGirlMOE:
     # * CSV attribute
     @property
     def CSV_property(self):
-        return self.CSV
+        return self.__CSV
 
     @CSV_property.setter
     def CSV_property(self, New_value):
         if not isinstance(New_value, str):
             raise TypeError("CSV must be a string") #! Alert
-        self.CSV = New_value
+        self.__CSV = New_value
     
     @CSV_property.deleter
     def CSV_property(self):
         print("Deleting CSV...")
-        del self.CSV
+        del self.__CSV
 
     @staticmethod
     def model_dropdown(Driver, XPATH_path: string, XPATH_path_list: string, Option_picked: string) -> None:
@@ -135,7 +146,8 @@ class MakeGirlMOE:
 
         else:   
             pass
-
+    
+    @Utilities.timer_func
     def get_images_waifus_random(self) -> None:
         
         Path_chrome_driver:str = r"C:\Users\Cesar\Dropbox\PC\Desktop\chromedriver.exe"
@@ -149,19 +161,19 @@ class MakeGirlMOE:
 
         # * Webdriver chrome activate
         Driver = webdriver.Chrome(Path_chrome_driver)
-        Driver.get(self.URL)
+        Driver.get(self.__URL)
 
         # * Waiting time
-        Driver.implicitly_wait(self.Initial)
+        Driver.implicitly_wait(self.__Initial)
         
-        time.sleep(self.Initial)
+        time.sleep(self.__Initial)
         
-        for i in range(self.Number):
+        for i in range(self.__Number):
 
             Button_click = Driver.find_element(By.XPATH, XPATH_button)
             Button_click.click()
             # *
-            time.sleep(self.Time_interval)
+            time.sleep(self.__Time_interval)
 
             Image = Driver.find_element(By.XPATH, XPATH_image)
             src = Image.get_attribute('src')
@@ -172,10 +184,11 @@ class MakeGirlMOE:
             urllib.request.urlretrieve(src, Image_folder)
 
             # *
-            time.sleep(self.Time_interval)
+            time.sleep(self.__Time_interval)
 
         Driver.close()
-        
+    
+    @Utilities.timer_func
     def get_images_waifus_settings(self) -> None:
         
         # * chromedriver path
@@ -228,55 +241,55 @@ class MakeGirlMOE:
         XPATH_image_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[1]/div/button'
 
         # *
-        for k in range(len(self.Model)):
+        for k in range(len(self.__Model)):
             
             # * Webdriver chrome activate
             Driver = webdriver.Chrome(Path_chrome_driver)
-            Driver.get(self.URL[k])
+            Driver.get(self.__URL[k])
 
             # * Waiting time
-            Driver.implicitly_wait(self.Initial)
+            Driver.implicitly_wait(self.__Initial)
 
             # * Function dropdown used
-            self.model_dropdown(Driver, XPATH_model_button, XPATH_model_open, self.Model[k])
-            self.model_dropdown(Driver, XPATH_hair_color_button, XPATH_hair_color_open, self.Hair_color[k])
-            self.model_dropdown(Driver, XPATH_hair_style_button, XPATH_hair_style_open, self.Hair_style[k])
-            self.model_dropdown(Driver, XPATH_Eye_color_button, XPATH_Eye_color_open, self.Eye_color[k])
+            self.model_dropdown(Driver, XPATH_model_button, XPATH_model_open, self.__Model[k])
+            self.model_dropdown(Driver, XPATH_hair_color_button, XPATH_hair_color_open, self.__Hair_color[k])
+            self.model_dropdown(Driver, XPATH_hair_style_button, XPATH_hair_style_open, self.__Hair_style[k])
+            self.model_dropdown(Driver, XPATH_Eye_color_button, XPATH_Eye_color_open, self.__Eye_color[k])
 
             # * Function on off used
-            self.model_on_off(Driver, XPATH_dark_skin_off_button, XPATH_dark_skin_random_button, XPATH_dark_skin_on_button, self.Dark_sin[k])
-            self.model_on_off(Driver, XPATH_blush_off_button, XPATH_blush_random_button, XPATH_blush_on_button,  self.Blush[k])
-            self.model_on_off(Driver, XPATH_smile_off_button, XPATH_smile_random_button, XPATH_smile_on_button, self.Smile[k])
-            self.model_on_off(Driver, XPATH_open_mouth_off_button, XPATH_open_mouth_random_button, XPATH_open_mouth_on_button, self.Open_mouth[k])
-            self.model_on_off(Driver, XPATH_hat_off_button, XPATH_hat_random_button, XPATH_hat_on_button, self.Hat[k])
-            self.model_on_off(Driver, XPATH_ribbon_off_button, XPATH_ribbon_random_button, XPATH_ribbon_on_button, self.Ribbon[k])
-            self.model_on_off(Driver, XPATH_glasses_off_button, XPATH_glasses_random_button, XPATH_glasses_on_button, self.Glasses[k])
+            self.model_on_off(Driver, XPATH_dark_skin_off_button, XPATH_dark_skin_random_button, XPATH_dark_skin_on_button, self.__Dark_sin[k])
+            self.model_on_off(Driver, XPATH_blush_off_button, XPATH_blush_random_button, XPATH_blush_on_button,  self.__Blush[k])
+            self.model_on_off(Driver, XPATH_smile_off_button, XPATH_smile_random_button, XPATH_smile_on_button, self.__Smile[k])
+            self.model_on_off(Driver, XPATH_open_mouth_off_button, XPATH_open_mouth_random_button, XPATH_open_mouth_on_button, self.__Open_mouth[k])
+            self.model_on_off(Driver, XPATH_hat_off_button, XPATH_hat_random_button, XPATH_hat_on_button, self.__Hat[k])
+            self.model_on_off(Driver, XPATH_ribbon_off_button, XPATH_ribbon_random_button, XPATH_ribbon_on_button, self.__Ribbon[k])
+            self.model_on_off(Driver, XPATH_glasses_off_button, XPATH_glasses_random_button, XPATH_glasses_on_button, self.__Glasses[k])
 
             # * Initial time
-            time.sleep(self.Initial)
+            time.sleep(self.__Initial)
 
             # * Instance epoch
-            for i in range(self.Epochs[k]):
+            for i in range(self.__Epochs[k]):
                 
                 # *
                 Button_click = Driver.find_element(By.XPATH, XPATH_image_button)
                 Button_click.click()
 
                 # * Interval times
-                time.sleep(self.Time_interval)
+                time.sleep(self.__Time_interval)
 
                 # * Read image
                 Image = Driver.find_element(By.XPATH, XPATH_image)
                 src = Image.get_attribute('src')
                 
                 # * Direction exist
-                Exist_dir = os.path.isdir('{}/Girl_{}_{}_{}'.format(self.Folder[k], self.Hair_color[k], self.Hair_style[k], self.Eye_color[k])) 
+                Exist_dir = os.path.isdir('{}/Girl_{}_{}_{}'.format(self.__Folder[k], self.__Hair_color[k], self.__Hair_style[k], self.__Eye_color[k])) 
 
                 if Exist_dir == False:
-                    New_folder = '{}/Girl_{}_{}_{}'.format(self.Folder[k], self.Hair_color[k], self.Hair_style[k], self.Eye_color[k])
+                    New_folder = '{}/Girl_{}_{}_{}'.format(self.__Folder[k], self.__Hair_color[k], self.__Hair_style[k], self.__Eye_color[k])
                     os.mkdir(New_folder)
                 else:
-                    New_folder = '{}/Girl_{}_{}_{}'.format(self.Folder[k], self.Hair_color[k], self.Hair_style[k], self.Eye_color[k])
+                    New_folder = '{}/Girl_{}_{}_{}'.format(self.__Folder[k], self.__Hair_color[k], self.__Hair_style[k], self.__Eye_color[k])
 
                 # * Name girl images
                 Image_name = "Girl_Image_{}.png".format(i)
@@ -286,7 +299,7 @@ class MakeGirlMOE:
                 urllib.request.urlretrieve(src, Image_folder)
 
                 # * Interval times
-                time.sleep(self.Time_interval)
+                time.sleep(self.__Time_interval)
 
             # * Close Google chrome 
             Driver.close()
