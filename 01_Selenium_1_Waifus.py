@@ -10,6 +10,9 @@ from selenium.webdriver.common.by import By
 
 from functools import wraps
 
+from memory_profiler import memory_usage
+from memory_profiler import profile
+
 #URL = r"https://make.girls.moe/#/"
 
 # ?
@@ -38,6 +41,7 @@ class Utilities(object):
 
             return result
         return wrapper
+    
 
 class MakeGirlMOE(Utilities):
 
@@ -147,6 +151,7 @@ class MakeGirlMOE(Utilities):
         else:   
             pass
     
+    @profile
     @Utilities.timer_func
     def get_images_waifus_random(self) -> None:
         
@@ -188,6 +193,7 @@ class MakeGirlMOE(Utilities):
 
         Driver.close()
     
+    @profile
     @Utilities.timer_func
     def get_images_waifus_settings(self) -> None:
         
