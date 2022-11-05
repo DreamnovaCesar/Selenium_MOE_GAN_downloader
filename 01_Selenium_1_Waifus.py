@@ -313,7 +313,7 @@ class MakeGirlMOE(Utilities):
 def main():
     
     # * Waifu CSV with data
-    CSV_path = r"C:\Users\Cesar\Dropbox\PC\Desktop\Waifus_csv\Waifus_data_csv.csv"
+    CSV_path = "Waifus_data_csv.csv"
 
     # * Class instance
     Waifu = MakeGirlMOE(csv = CSV_path)
