@@ -42,6 +42,7 @@ class Utilities(object):
             return result
         return wrapper
     
+# ?
 
 class MakeGirlMOE(Utilities):
 
@@ -49,6 +50,7 @@ class MakeGirlMOE(Utilities):
         
         # * Instance attributes
         self.__CSV = kwargs.get('csv', None)
+        self.__Number_images = kwargs.get('NI', None)
 
         # * Folder attribute (ValueError, TypeError)
         if self.__CSV == None:
@@ -161,9 +163,6 @@ class MakeGirlMOE(Utilities):
         XPATH_image = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[1]/div/div[1]/div/div/img'
         XPATH_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[1]/div/button'
 
-        # *
-        Header_list = []
-
         # * Webdriver chrome activate
         Driver = webdriver.Chrome(Path_chrome_driver)
         Driver.get(self.__URL)
@@ -173,7 +172,7 @@ class MakeGirlMOE(Utilities):
         
         time.sleep(self.__Initial)
         
-        for i in range(self.__Number):
+        for i in range(self.__Number_images):
 
             Button_click = Driver.find_element(By.XPATH, XPATH_button)
             Button_click.click()
