@@ -8,14 +8,15 @@ class MakeGirlMOE(Utilities):
     def __init__(self, **kwargs) -> None:
         
         # * Instance attributes
-        self.__CSV = kwargs.get('csv', None)
+        self.__Folder_CSV = kwargs.get('csv', None)
+        self.__Folder_images = kwargs.get('FI', None)
+
         self.__Number_images = kwargs.get('NI', None)
 
-        # * Folder attribute (ValueError, TypeError)
-        if self.__CSV == None:
-            raise ValueError("Folder does not exist") #! Alert
+        # * chromedriver path
+        self.__Path_chrome_driver = r"chromedriver.exe"
             
-        with open(self.__CSV) as CSV:
+        with open(self.__Folder_CSV) as CSV:
         
             Data = pd.read_csv(CSV)
 
@@ -40,29 +41,45 @@ class MakeGirlMOE(Utilities):
 
     def __repr__(self):
 
-        kwargs_info = "{}".format(self.__CSV)
+        kwargs_info = "{}, {}".format(self.__Folder_CSV, self.__Folder_images)
 
         return kwargs_info
 
     def __str__(self):
         pass
     
-    # * CSV attribute
+    # * __Folder_CSV attribute
     @property
-    def CSV_property(self):
-        return self.__CSV
+    def __Folder_CSV_property(self):
+        return self.__Folder_CSV
 
-    @CSV_property.setter
-    def CSV_property(self, New_value):
+    @__Folder_CSV_property.setter
+    def __Folder_CSV_property(self, New_value):
         if not isinstance(New_value, str):
             raise TypeError("CSV must be a string") #! Alert
-        self.__CSV = New_value
+        self.__Folder_CSV = New_value
     
-    @CSV_property.deleter
-    def CSV_property(self):
+    @__Folder_CSV_property.deleter
+    def __Folder_CSV_property(self):
         print("Deleting CSV...")
-        del self.__CSV
+        del self.__Folder_CSV
 
+    # * __Folder_images attribute
+    @property
+    def __Folder_images_property(self):
+        return self.__Folder_images
+
+    @__Folder_images_property.setter
+    def __Folder_images_property(self, New_value):
+        if not isinstance(New_value, str):
+            raise TypeError("folder images must be a string") #! Alert
+        self.__Folder_images = New_value
+    
+    @__Folder_images_property.deleter
+    def __Folder_images_property(self):
+        print("Deleting folder images...")
+        del self.__Folder_CSV
+        
     @staticmethod
     def model_dropdown(Driver, XPATH_path: string, XPATH_path_list: string, Option_picked: string) -> None:
         
@@ -115,15 +132,13 @@ class MakeGirlMOE(Utilities):
     @profile
     @Utilities.timer_func
     def get_images_waifus_random(self) -> None:
-        
-        Path_chrome_driver:str = r"C:\Users\Cesar\Dropbox\PC\Desktop\chromedriver.exe"
-        
+    
         # *
         XPATH_image = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[1]/div/div[1]/div/div/img'
         XPATH_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[1]/div/button'
 
         # * Webdriver chrome activate
-        Driver = webdriver.Chrome(Path_chrome_driver)
+        Driver = webdriver.Chrome(self.__Path_chrome_driver)
         Driver.get(self.__URL)
 
         # * Waiting time
@@ -142,7 +157,7 @@ class MakeGirlMOE(Utilities):
             src = Image.get_attribute('src')
             
             Image_name = "Image_{}.png".format(i)
-            Image_folder = os.path.join(r"C:\Users\Cesar\Dropbox\PC\Desktop\Waifus", Image_name)
+            Image_folder = os.path.join(self.__Folder_images, Image_name)
 
             urllib.request.urlretrieve(src, Image_folder)
 
@@ -155,8 +170,6 @@ class MakeGirlMOE(Utilities):
     @Utilities.timer_func
     def get_images_waifus_settings(self) -> None:
         
-        # * chromedriver path
-        Path_chrome_driver = r"C:\Users\Cesar\Dropbox\PC\Desktop\chromedriver.exe"
         
         # * Dropdown items model
         XPATH_model_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[2]/div/div[2]/div/div/button'
@@ -208,7 +221,7 @@ class MakeGirlMOE(Utilities):
         for k in range(len(self.__Model)):
             
             # * Webdriver chrome activate
-            Driver = webdriver.Chrome(Path_chrome_driver)
+            Driver = webdriver.Chrome(self.__Path_chrome_driver)
             Driver.get(self.__URL[k])
 
             # * Waiting time

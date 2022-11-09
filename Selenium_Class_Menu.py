@@ -1,9 +1,11 @@
-from Selenium_Class_MakeGirlMOE import 
+from Selenium_Class_MakeGirlMOE import MakeGirlMOE
+from Selenium_Class_Utilities import Utilities
 
-class Menu():
+class Menu(Utilities):
 
     def __init__(self, **kwargs) -> None:
-        pass
+        
+        self.__Images = r'Images';
 
     def __repr__(self):
 
@@ -15,8 +17,28 @@ class Menu():
         pass
     
     @staticmethod
-    def create_objects_2D(Folder_2D_):
-        pass
+    def add_csv(Folder_2D_):
+
+        while(True):
+
+            CSV_path_ = input('Add CSV path: ');
+            print('\n')
+
+            print('This is the CSV path: {}'.format(CSV_path_));
+            print('\n')
+
+            Proceed = input('Do you want to proceed?: [y/n]: ');
+
+            if(Proceed == 'y'):
+
+                break;
+
+            else:
+
+                pass;
+
+        Get_images = MakeGirlMOE(csv = CSV_path_);
+        Get_images.get_images_waifus_settings()
 
     @Utilities.time_func  
     def menu(self):
@@ -28,10 +50,10 @@ class Menu():
             print("\n");
 
             print("*" * Asterisk);
-            print('What do you want to do:');
+            print('What do you want to do: ');
             print("*" * Asterisk);
             print('\n');
-            print('1: ');
+            print('1: Get images from MAKEGIRL using CSV file');
 
             print('\n');
             print("*" * Asterisk);
@@ -39,7 +61,7 @@ class Menu():
             Options = input('Option: ');
 
             if(Options == '1'):
-                pass
+                self.add_csv(self.__Images)
 
             elif(Options == 'c'):
 
