@@ -215,12 +215,26 @@ class MakeGirlMOE(Utilities):
         XPATH_glasses_on_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[2]/div/div[3]/div[10]/div/button[3]'
 
         XPATH_image = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[1]/div/div[1]/div/div/img'
+        #XPATH_image = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[1]/div/div[1]'
         XPATH_image_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[1]/div/button'
 
         # *
         for k in range(len(self.__Model)):
             
             # * Webdriver chrome activate
+
+            chromeOptions = webdriver.ChromeOptions() 
+            chromeOptions.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2}) 
+            chromeOptions.add_argument("--no-sandbox") 
+            chromeOptions.add_argument("--disable-setuid-sandbox") 
+
+            chromeOptions.add_argument("--remote-debugging-port=9222")  # this
+
+            chromeOptions.add_argument("--disable-dev-shm-using") 
+            chromeOptions.add_argument("--disable-extensions") 
+            chromeOptions.add_argument("start-maximized") 
+            chromeOptions.add_argument("disable-infobars")
+
             Driver = webdriver.Chrome(self.__Path_chrome_driver)
             Driver.get(self.__URL[k])
 
