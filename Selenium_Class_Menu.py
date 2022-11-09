@@ -5,7 +5,7 @@ class Menu(Utilities):
 
     def __init__(self, **kwargs) -> None:
         
-        self.__Images = r'Images';
+        self.__Folder_images = r'Images';
 
     def __repr__(self):
 
@@ -37,10 +37,10 @@ class Menu(Utilities):
 
                 pass;
 
-        Get_images = MakeGirlMOE(csv = CSV_path_);
+        Get_images = MakeGirlMOE(csv = CSV_path_, FI = Folder_2D_);
         Get_images.get_images_waifus_settings()
 
-    @Utilities.time_func  
+    @Utilities.timer_func 
     def menu(self):
 
         while(True):
@@ -61,7 +61,7 @@ class Menu(Utilities):
             Options = input('Option: ');
 
             if(Options == '1'):
-                self.add_csv(self.__Images)
+                self.add_csv(self.__Folder_images)
 
             elif(Options == 'c'):
 

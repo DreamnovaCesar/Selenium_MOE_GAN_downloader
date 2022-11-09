@@ -260,13 +260,13 @@ class MakeGirlMOE(Utilities):
                 src = Image.get_attribute('src')
                 
                 # * Direction exist
-                Exist_dir = os.path.isdir('{}/Girl_{}_{}_{}'.format(self.__Folder[k], self.__Hair_color[k], self.__Hair_style[k], self.__Eye_color[k])) 
+                Exist_dir = os.path.isdir('{}/Girl_{}_{}_{}'.format(self.__Folder_images, self.__Hair_color[k], self.__Hair_style[k], self.__Eye_color[k])) 
 
                 if Exist_dir == False:
-                    New_folder = '{}/Girl_{}_{}_{}'.format(self.__Folder[k], self.__Hair_color[k], self.__Hair_style[k], self.__Eye_color[k])
+                    New_folder = '{}/Girl_{}_{}_{}'.format(self.__Folder_images, self.__Hair_color[k], self.__Hair_style[k], self.__Eye_color[k])
                     os.mkdir(New_folder)
                 else:
-                    New_folder = '{}/Girl_{}_{}_{}'.format(self.__Folder[k], self.__Hair_color[k], self.__Hair_style[k], self.__Eye_color[k])
+                    New_folder = '{}/Girl_{}_{}_{}'.format(self.__Folder_images, self.__Hair_color[k], self.__Hair_style[k], self.__Eye_color[k])
 
                 # * Name girl images
                 Image_name = "Girl_Image_{}.png".format(i)
