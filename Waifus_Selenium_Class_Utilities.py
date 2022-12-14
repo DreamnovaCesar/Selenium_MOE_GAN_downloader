@@ -1,9 +1,8 @@
 
-from Selenium_Class_Libraries import wraps
-from Selenium_Class_Libraries import time
+from Waifus_Selenium_Class_Libraries import wraps
+from Waifus_Selenium_Class_Libraries import time
 
 # ?
-
 class Utilities(object):
 
     # ? Get the execution time of each function

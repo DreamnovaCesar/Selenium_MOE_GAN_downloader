@@ -1,8 +1,7 @@
-from Selenium_Class_Libraries import *
-from Selenium_Class_Utilities import Utilities
+from Waifus_Selenium_Class_Libraries import *
+from Waifus_Selenium_Class_Utilities import Utilities
 
 # ?
-
 class MakeGirlMOE(Utilities):
 
     def __init__(self, **kwargs) -> None:
@@ -16,10 +15,13 @@ class MakeGirlMOE(Utilities):
         # * chromedriver path
         self.__Path_chrome_driver = r"chromedriver.exe"
             
-        with open(self.__Folder_CSV) as CSV:
+        with open(self.__Folder_CSV, 'r', encoding = 'utf_8_sig') as CSV:
         
             Data = pd.read_csv(CSV)
 
+            print(Data.columns.tolist())
+            print(Data.columns[0])
+            
             self.__Model = Data['Model'].tolist()
             self.__Hair_color = Data['Hair color'].tolist()
             self.__Hair_style = Data['Hair style'].tolist()
@@ -138,7 +140,7 @@ class MakeGirlMOE(Utilities):
         XPATH_button = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[1]/div/button'
 
         # * Webdriver chrome activate
-        Driver = webdriver.Chrome(self.__Path_chrome_driver)
+        Driver = webdriver.Chrome()
         Driver.get(self.__URL)
 
         # * Waiting time
@@ -235,7 +237,7 @@ class MakeGirlMOE(Utilities):
             chromeOptions.add_argument("start-maximized") 
             chromeOptions.add_argument("disable-infobars")
 
-            Driver = webdriver.Chrome(self.__Path_chrome_driver)
+            Driver = webdriver.Chrome()
             Driver.get(self.__URL[k])
 
             # * Waiting time

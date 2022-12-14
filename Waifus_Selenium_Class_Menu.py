@@ -1,6 +1,7 @@
-from Selenium_Class_MakeGirlMOE import MakeGirlMOE
-from Selenium_Class_Utilities import Utilities
+from Waifus_Selenium_Class_MakeGirlMOE import MakeGirlMOE
+from Waifus_Selenium_Class_Utilities import Utilities
 
+# ?
 class Menu(Utilities):
 
     def __init__(self, **kwargs) -> None:

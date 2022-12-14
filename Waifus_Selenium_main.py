@@ -1,5 +1,5 @@
-from Selenium_Class_Libraries import *
-from Selenium_Class_Menu import Menu
+from Waifus_Selenium_Class_Libraries import *
+from Waifus_Selenium_Class_Menu import Menu
 
 def main():  
     # *
