@@ -1,4 +1,4 @@
-from Waifus_Selenium_Class_MakeGirlMOE import MakeGirlMOE
+from Waifus_Selenium_Class_WaifusDownload_CSV import WaifusDownloadCSV
 from Waifus_Selenium_Class_Utilities import Utilities
 
 # ?

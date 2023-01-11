@@ -2,10 +2,33 @@ from Waifus_Selenium_Class_Libraries import *
 from Waifus_Selenium_Class_Utilities import Utilities
 
 # ?
-class MakeGirlMOE(Utilities):
+class WaifusDownloadCSV(Utilities):
+    """
+    Utilities inheritance
 
+    A class used to crop Mini-MIAS images using the coordinates from the website.
+
+    Methods:
+
+        data_dic():
+
+        data_dic_row():
+
+        model_dropdown(): description
+
+        model_on_off(): description
+
+        get_images_waifus_random(): description
+
+    """
+
+    # * Initializing (Constructor)
     def __init__(self, **kwargs) -> None:
-        
+        """
+        Keyword Args:
+
+        """
+
         # * Instance attributes
         self.__Folder_CSV = kwargs.get('csv', None)
         self.__Folder_images = kwargs.get('FI', None)
@@ -14,7 +37,12 @@ class MakeGirlMOE(Utilities):
 
         # * chromedriver path
         self.__Path_chrome_driver = r"chromedriver.exe"
-            
+
+        #self.Number = kwargs.get('waifus', 50)
+        self.__Time_interval = 0.05
+        self.__Initial = 5
+
+        # * utf_8_sig
         with open(self.__Folder_CSV, 'r', encoding = 'utf_8_sig') as CSV:
         
             Data = pd.read_csv(CSV)
@@ -37,19 +65,50 @@ class MakeGirlMOE(Utilities):
             self.__URL = Data['URL'].tolist()
             self.__Epochs = Data['Epochs'].tolist()
 
-            #self.Number = kwargs.get('waifus', 50)
-            self.__Time_interval = 0.05
-            self.__Initial = 5
 
+    # * Class variables
     def __repr__(self):
+            return f"""[{self.__Folder_CSV}, 
+                        {self.__Folder_images},
+                        {self.__Number_images},
+                        {self.__Time_interval},
+                        {self.__Initial}]""";
 
-        kwargs_info = "{}, {}".format(self.__Folder_CSV, self.__Folder_images)
-
-        return kwargs_info
-
+    # * Class description
     def __str__(self):
-        pass
+        return  f'';
     
+    # * Deleting (Calling destructor)
+    def __del__(self):
+        print('');
+
+    # * Get data from a dic
+    def data_dic(self):
+
+        return {'Folder_CSV': str(self.__Folder_CSV),
+                'Folder_images': str(self.__Folder_images),
+                'Number_images': str(self.__Number_images)
+                };
+    
+    # * Get data from a dic row
+    def data_dic_row(self):
+
+        return {'Model': str(self.__Model),
+                'Hair_color': str(self.__Hair_color),
+                'Hair_style': str(self.__Hair_style),
+                'Eye_color': str(self.__Eye_color),
+                'Dark_sin': str(self.__Dark_sin),
+                'Blush': str(self.__Blush),
+                'Smile': str(self.__Smile),
+                'Open_mouth': str(self.__Open_mouth),
+                'Hat': str(self.__Hat),
+                'Ribbon': str(self.__Ribbon),
+                'Glasses': str(self.__Glasses),
+                'Folder': str(self.__Folder),
+                'URL': str(self.__URL),
+                'Epochs': str(self.__Epochs)
+                };
+
     # * __Folder_CSV attribute
     @property
     def __Folder_CSV_property(self):
@@ -81,7 +140,7 @@ class MakeGirlMOE(Utilities):
     def __Folder_images_property(self):
         print("Deleting folder images...")
         del self.__Folder_CSV
-        
+    # ?
     @staticmethod
     def model_dropdown(Driver, XPATH_path: string, XPATH_path_list: string, Option_picked: string) -> None:
         
@@ -112,6 +171,7 @@ class MakeGirlMOE(Utilities):
 
         Options[Option_index].click()
     
+    # ?
     @staticmethod
     def model_on_off(Driver, XPATH_path_on: string, XPATH_path_random: string, XPATH_path_off: string, Option_picked: string) -> None:
 
@@ -130,7 +190,8 @@ class MakeGirlMOE(Utilities):
 
         else:   
             pass
-    
+        
+    # ?
     @profile
     @Utilities.timer_func
     def get_images_waifus_random(self) -> None:
@@ -238,7 +299,9 @@ class MakeGirlMOE(Utilities):
             chromeOptions.add_argument("disable-infobars")
 
             Driver = webdriver.Chrome()
+            Driver.maximize_window()
             Driver.get(self.__URL[k])
+            
 
             # * Waiting time
             Driver.implicitly_wait(self.__Initial)
