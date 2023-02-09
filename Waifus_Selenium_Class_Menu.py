@@ -38,7 +38,7 @@ class Menu(Utilities):
 
                 pass;
 
-        Get_images = MakeGirlMOE(csv = CSV_path_, FI = Folder_2D_);
+        Get_images = WaifusDownloadCSV(csv = CSV_path_, FI = Folder_2D_);
         Get_images.get_images_waifus_settings()
 
     @Utilities.timer_func 

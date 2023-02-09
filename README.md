@@ -1,30 +1,49 @@
 
-# Waifus-GAN-Selenium (Test)
+![Python](https://img.shields.io/badge/python-v3.10+-blue.svg)
+[![Build Status](https://travis-ci.org/anfederico/clairvoyant.svg?branch=master)](https://travis-ci.org/anfederico/clairvoyant)
+![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
 
-Foobar is a Python library for dealing with word pluralization.
+<a name="readme-top"></a>
 
-## Installation
+# Download image from https://make.girls.moe/#/
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+"make.girls.moe" is a website that uses artificial intelligence to generate anime-style characters. It utilizes a generative adversarial network (GAN) to generate images of characters based on random input. The website allows you to choose various attributes of the generated character, such as hair style, eye color, clothing, and more.
 
-```bash
-pip install foobar
-```
+The purpose of the website is to provide a fun and accessible tool for generating anime-style characters for use in various projects, such as creating digital artwork or designing characters for games. The generated characters can be used for personal or commercial purposes. Using the website is simple and straightforward. You can select the various attributes of the character you want to generate, and the website will display the resulting image. You can then download the image in PNG format or share it on social media.
 
-## Usage
+Selenium is an open-source software testing framework that enables you to automate web browsers for testing purposes. It supports multiple programming languages including Python, Java, C#, and others. With Selenium, you can write scripts to simulate a user's interaction with a web application, such as clicking buttons, filling out forms, and navigating between pages. This allows you to catch bugs and ensure the proper functioning of your application.
+
+## Setup
+
+To create a virtual environment with using Anaconda, follow these steps:
+
+Open the Anaconda Prompt by clicking the Start button and typing "Anaconda Prompt".
+Type the following command to create a new virtual environment called "tfenv":
 
 ```python
-import foobar
-
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
+conda create --name tfenv
 ```
+
+Activate the virtual environment by typing:
+
+```python
+conda activate tfenv
+```
+
+Finally, install requirements.txt.
+
+```python
+conda install requirements.txt
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Connect with me
+
+- Contact me CesareduardoMucha@hotmail.com
+- Follow me on [Linkedin](https://www.linkedin.com/in/cesar-eduardo-mu%C3%B1oz-chavez-a00674186/) and [Twitter](https://twitter.com/CesarEd43166481) 💡
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contributing
 
@@ -33,6 +52,5 @@ to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## License
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-[MIT](https://choosealicense.com/licenses/mit/)
