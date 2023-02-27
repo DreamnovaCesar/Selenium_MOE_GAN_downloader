@@ -1,8 +1,28 @@
-from Waifus_Selenium_Class_Libraries import *
-from Waifus_Selenium_Class_Utilities import Utilities
 
 # ?
-class WaifusDownloadCSV(Utilities):
+import os
+import time
+import string
+import pandas as pd
+
+# ?
+import urllib.request
+
+# ?
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+# ?
+from functools import wraps
+
+# ?
+from memory_profiler import memory_usage
+from memory_profiler import profile
+
+from ..Utilities import Settings
+
+# ?
+class WaifusDownloadCSV(object):
     """
     Utilities inheritance
 
@@ -11,9 +31,7 @@ class WaifusDownloadCSV(Utilities):
     Methods:
 
         data_dic():
-
-        data_dic_row():
-
+    
         model_dropdown(): description
 
         model_on_off(): description
@@ -21,7 +39,7 @@ class WaifusDownloadCSV(Utilities):
         get_images_waifus_random(): description
 
     """
-
+    
     # * Initializing (Constructor)
     def __init__(self, **kwargs) -> None:
         """
@@ -30,9 +48,22 @@ class WaifusDownloadCSV(Utilities):
         """
 
         # * Instance attributes
-        self.__Folder_CSV = kwargs.get('csv', None)
-        self.__Folder_images = kwargs.get('FI', None)
+        self.__Model = kwargs.get('model', None)
+        self.__Hair_color = kwargs.get('haircolor', None)
+        self.__Hair_style = kwargs.get('hairstyle', None)
+        self.__Eye_color = kwargs.get('eyecolor', None)
+        self.__Dark_sin = kwargs.get('darksin', None)
+        self.__Blush = kwargs.get('blush', None)
+        self.__Smile = kwargs.get('smile', None)
+        self.__Open_mouth = kwargs.get('openmouth', None)
+        self.__Hat = kwargs.get('hat', None)
+        self.__Ribbon = kwargs.get('ribbon', None)
+        self.__Glasses = kwargs.get('Glasses', None)
+        self.__Folder = kwargs.get('Folder', None)
+        self.__URL = kwargs.get('URL', None)
+        self.__Epochs = kwargs.get('epochs', None)
 
+        self.__Folder_images = kwargs.get('FI', None)
         self.__Number_images = kwargs.get('NI', None)
 
         # * chromedriver path
@@ -42,34 +73,9 @@ class WaifusDownloadCSV(Utilities):
         self.__Time_interval = 0.05
         self.__Initial = 5
 
-        # * utf_8_sig
-        with open(self.__Folder_CSV, 'r', encoding = 'utf_8_sig') as CSV:
-        
-            Data = pd.read_csv(CSV)
-
-            print(Data.columns.tolist())
-            print(Data.columns[0])
-            
-            self.__Model = Data['Model'].tolist()
-            self.__Hair_color = Data['Hair color'].tolist()
-            self.__Hair_style = Data['Hair style'].tolist()
-            self.__Eye_color = Data['Eye color'].tolist()
-            self.__Dark_sin = Data['Dark sin'].tolist()
-            self.__Blush = Data['Blush'].tolist()
-            self.__Smile = Data['Smile'].tolist()
-            self.__Open_mouth = Data['Open mouth'].tolist()
-            self.__Hat = Data['Hat'].tolist()
-            self.__Ribbon = Data['Ribbon'].tolist()
-            self.__Glasses = Data['Glasses'].tolist()
-            self.__Folder = Data['Folder'].tolist()
-            self.__URL = Data['URL'].tolist()
-            self.__Epochs = Data['Epochs'].tolist()
-
-
     # * Class variables
     def __repr__(self):
-            return f"""[{self.__Folder_CSV}, 
-                        {self.__Folder_images},
+            return f"""[{self.__Folder_images},
                         {self.__Number_images},
                         {self.__Time_interval},
                         {self.__Initial}]""";
@@ -108,7 +114,7 @@ class WaifusDownloadCSV(Utilities):
                 'URL': str(self.__URL),
                 'Epochs': str(self.__Epochs)
                 };
-
+    
     # * __Folder_CSV attribute
     @property
     def __Folder_CSV_property(self):
@@ -140,7 +146,7 @@ class WaifusDownloadCSV(Utilities):
     def __Folder_images_property(self):
         print("Deleting folder images...")
         del self.__Folder_CSV
-    # ?
+        
     @staticmethod
     def model_dropdown(Driver, XPATH_path: string, XPATH_path_list: string, Option_picked: string) -> None:
         
@@ -171,7 +177,6 @@ class WaifusDownloadCSV(Utilities):
 
         Options[Option_index].click()
     
-    # ?
     @staticmethod
     def model_on_off(Driver, XPATH_path_on: string, XPATH_path_random: string, XPATH_path_off: string, Option_picked: string) -> None:
 
@@ -190,10 +195,7 @@ class WaifusDownloadCSV(Utilities):
 
         else:   
             pass
-        
-    # ?
-    @profile
-    @Utilities.timer_func
+    
     def get_images_waifus_random(self) -> None:
     
         # *

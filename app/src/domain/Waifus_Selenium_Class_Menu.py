@@ -1,8 +1,7 @@
 from Waifus_Selenium_Class_WaifusDownload_CSV import WaifusDownloadCSV
-from Waifus_Selenium_Class_Utilities import Utilities
 
 # ?
-class Menu(Utilities):
+class Menu(object):
 
     def __init__(self, **kwargs) -> None:
         
@@ -17,7 +16,6 @@ class Menu(Utilities):
     def __str__(self):
         pass
     
-    @staticmethod
     def add_csv(Folder_2D_):
 
         while(True):
@@ -40,8 +38,7 @@ class Menu(Utilities):
 
         Get_images = WaifusDownloadCSV(csv = CSV_path_, FI = Folder_2D_);
         Get_images.get_images_waifus_settings()
-
-    @Utilities.timer_func 
+ 
     def menu(self):
 
         while(True):
