@@ -5,7 +5,7 @@ class Timer(object):
     """A decorator to measure the execution time of a function."""
     
     @staticmethod  
-    def time_func(func):
+    def timer(func):
         """
         Decorator function that measures the execution time of a function.
 

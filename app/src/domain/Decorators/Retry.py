@@ -5,7 +5,7 @@ class Retry(object):
     """A decorator to retry a function with a delay."""
 
     @staticmethod
-    def retry_with_delay(max_retries=3, delay=1):
+    def retry_with_delay(max_retries = 3, delay = 1):
         """
         Decorator function that retries a function a certain number of times with a delay between retries.
 
@@ -24,7 +24,7 @@ class Retry(object):
         def decorator(func):
             @wraps(func) 
             def wrapper(*args, **kwargs):
-                for i in range(max_retries):
+                for _ in range(max_retries):
                     try:
                         result = func(*args, **kwargs)
                         return result

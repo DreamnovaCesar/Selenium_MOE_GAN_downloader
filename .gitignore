@@ -1,3 +1,8 @@
-Test.py
-Test1.py
+# Byte-compiled / optimized / DLL files
+__pycache__/
 
+# OS-specific files
+app/Springer/
+app/src/Data/geckodriver.log
+
+app/src/__pycache__/

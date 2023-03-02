@@ -1,4 +1,3 @@
-from .GPUDetector import GPUDetector
 from .Logger import Logger
 from .Retry import Retry
 from .Singleton import Singleton
