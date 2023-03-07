@@ -108,23 +108,24 @@ class WaifusDownloadCSV(DownloadGirlsMOE):
         Chrome_options.add_argument("start-maximized") 
         Chrome_options.add_argument("disable-infobars")
 
-        Driver = webdriver.Chrome()
-        Driver.maximize_window()
-        Driver.get(self._URL)
-        
-        # * Waiting time
-        Driver.implicitly_wait(self._Initial)
         
         # *
         for k in range(len(self._Data.index)):
             
+            Driver = webdriver.Chrome()
+            Driver.maximize_window()
+            Driver.get(self._URL)
+            
+            # * Waiting time
+            Driver.implicitly_wait(self._Initial)
+
             for j in range(len(Settings._XPATH_BUTTON_LIST_)):
 
                 Drop_down_model = DropdownModel(Driver, 
                                                 Settings._XPATH_BUTTON_LIST_[j], 
                                                 Settings._XPATH_OPEN_LIST_[j])
 
-                Drop_down_model.select_option(self._Attributes[k][j])
+                Drop_down_model.select_option(self._Attributes[j][k])
 
             # * Function on off used
             for j in range(len(Settings._XPATH_OFF_BUTTON_)):
@@ -134,7 +135,7 @@ class WaifusDownloadCSV(DownloadGirlsMOE):
                                         Settings._XPATH_RANDOM_BUTTON_[j], 
                                         Settings._XPATH_ON_BUTTON_[j])
 
-                ON_OFF_event.select_option(self._Attributes[k][j])
+                ON_OFF_event.select_option(self._Attributes[j][k])
             
             # * Initial time
             time.sleep(self._Initial)

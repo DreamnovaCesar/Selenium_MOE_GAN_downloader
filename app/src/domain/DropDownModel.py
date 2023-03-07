@@ -22,9 +22,11 @@ class DropdownModel:
         for j, option in enumerate(options):
             list_options.append(option.text)
         
+        print('--------- {}'.format(list_options))
+
         option_index = list_options.index(option_picked)
         
-        print('{}'.format(option_picked))
+        print('/// {}'.format(option_picked))
 
         options[option_index].click()
         list_options = []
@@ -40,6 +42,6 @@ class DropdownModel:
         
         option_index = list_options.index(option_picked)
         
-        print('{}'.format(option_picked))
+        print('/// {}'.format(option_picked))
 
         options[option_index].click()
