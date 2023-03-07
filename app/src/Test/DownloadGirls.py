@@ -231,8 +231,6 @@ class WaifusDownloadCSV(object):
 
         Driver.close()
     
-    @profile
-    @Utilities.timer_func
     def get_images_waifus_settings(self) -> None:
         
         

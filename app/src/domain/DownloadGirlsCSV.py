@@ -15,314 +15,161 @@ from selenium.webdriver.common.by import By
 #from memory_profiler import memory_usage
 #from memory_profiler import profile
 
+from .DropDownModel import DropdownModel
+from .OnOFFEvent import OnOffEvent
+from .DataLoaderCSV import DataLoaderCSV
 from .DownloadGirlsMOE import DownloadGirlsMOE
 from ..Utilities import Settings
 
-# ?
-@Singleton.singleton
+from typing import Optional
+
 class WaifusDownloadCSV(DownloadGirlsMOE):
-    """
-    Utilities inheritance
-
-    A class used to crop Mini-MIAS images using the coordinates from the website.
-
-    Methods:
-
-        data_dic():
-
-        data_dic_row():
-
-        model_dropdown(): description
-
-        model_on_off(): description
-
-        get_images_waifus_random(): description
-
-    """
-
+  
     # * Initializing (Constructor)
-    def __init__(self, **kwargs) -> None:
-        """
-        Keyword Args:
-
-        """
+    def __init__(self, 
+                 Reader_CSV : DataLoaderCSV, 
+                 CSV: str, 
+                 Folder: str, 
+                 Number_folders: Optional[int] = None) -> None:
 
         # * Instance attributes
-        self.__Folder_CSV = kwargs.get('csv', None)
-        self.__Folder_images = kwargs.get('FI', None)
+        self._Reader_CSV = Reader_CSV
+        self._CSV = CSV
+        self._Folder_images = Folder
+        self._Number_folders = Number_folders
 
-        self.__Number_images = kwargs.get('NI', None)
-
-        # * chromedriver path
-        self.__Path_chrome_driver = r"chromedriver.exe"
-
-        #self.Number = kwargs.get('waifus', 50)
-        self.__Time_interval = 0.05
-        self.__Initial = 5
-
-        # * utf_8_sig
-        with open(self.__Folder_CSV, 'r', encoding = 'utf_8_sig') as CSV:
+        self._URL = 'https://make.girls.moe/#/'
+        self._Time_interval = 0.05
+        self._Initial = 5
         
-            Data = pd.read_csv(CSV)
+        self._Data = Reader_CSV.Data
+        self._Attributes = Reader_CSV.Attributes
 
-            print(Data.columns.tolist())
-            print(Data.columns[0])
-            
-            self.__Model = Data['Model'].tolist()
-            self.__Hair_color = Data['Hair color'].tolist()
-            self.__Hair_style = Data['Hair style'].tolist()
-            self.__Eye_color = Data['Eye color'].tolist()
-            self.__Dark_sin = Data['Dark sin'].tolist()
-            self.__Blush = Data['Blush'].tolist()
-            self.__Smile = Data['Smile'].tolist()
-            self.__Open_mouth = Data['Open mouth'].tolist()
-            self.__Hat = Data['Hat'].tolist()
-            self.__Ribbon = Data['Ribbon'].tolist()
-            self.__Glasses = Data['Glasses'].tolist()
-            self.__Folder = Data['Folder'].tolist()
-            self.__URL = Data['URL'].tolist()
-            self.__Epochs = Data['Epochs'].tolist()
+        self._Model = Reader_CSV.Model
+        self._Hair_color = Reader_CSV.Hair_color
+        self._Hair_style = Reader_CSV.Hair_style
+        self._Eye_color = Reader_CSV.Eye_color
+        self._Dark_sin = Reader_CSV.Dark_sin
+        self._Blush = Reader_CSV.Blush
+        self._Smile = Reader_CSV.Smile
+        self._Open_mouth = Reader_CSV.Open_mouth
+        self._Hat = Reader_CSV.Hat
+        self._Ribbon = Reader_CSV.Ribbon
+        self._Glasses = Reader_CSV.Glasses
+        self._Epochs = Reader_CSV.Epochs
 
-
-    # * Deleting (Calling destructor)
-    def __del__(self):
-        print('');
-
-    # ?
-    @staticmethod
-    def model_dropdown(Driver : webdriver.Chrome(), 
-                       XPATH_path: string, 
-                       XPATH_path_list: string, 
-                       Option_picked: string) -> None:
-        
-        # *
-        List_options = []
-
-        # *
-        Button = Driver.find_element(By.XPATH, XPATH_path)
-        Button.click()
-
-        # *
-        Button_dropdown = Driver.find_elements(By.XPATH, XPATH_path_list)
-        
-        # *
-        for i, Row in enumerate(Button_dropdown):
-
-            Options = Button_dropdown[i].find_elements(By.TAG_NAME, 'span')
-
-        for i, Option in enumerate(Options):
-
-            List_options.append(Option.text)
-
-        # *
-
-        Option_index = List_options.index(Option_picked)
-        
-        print('{}'.format(Option_picked))
-
-        Options[Option_index].click()
-    
-        # *
-        List_options = []
-
-        # *
-        Button = Driver.find_element(By.XPATH, XPATH_path)
-        Button.click()
-
-        # *
-        Button_dropdown = Driver.find_elements(By.XPATH, XPATH_path_list)
-        
-        # *
-        for i, Row in enumerate(Button_dropdown):
-
-            Options = Button_dropdown[i].find_elements(By.TAG_NAME, 'span')
-
-        for i, Option in enumerate(Options):
-
-            List_options.append(Option.text)
-
-        # *
-
-        Option_index = List_options.index(Option_picked)
-        
-        print('{}'.format(Option_picked))
-
-        Options[Option_index].click()
-
-    # ?
-    @staticmethod
-    def model_on_off(Driver : webdriver.Chrome(), 
-                     _XPATH_PATH_ON_ : string, 
-                     _XPATH_PATH_RANDOM_ : string, 
-                     _XPATH_PATH_OFF_ : string, 
-                     Option_picked : string) -> None:
-
-        # *
-        if(Option_picked == 'ON'):
-            Button = Driver.find_element(By.XPATH, _XPATH_PATH_ON_)
-            Button.click()
-
-        elif(Option_picked == 'Random'):
-            Button = Driver.find_element(By.XPATH, _XPATH_PATH_RANDOM_)
-            Button.click()
-
-        elif(Option_picked == 'OFF'):
-            Button = Driver.find_element(By.XPATH, _XPATH_PATH_OFF_)
-            Button.click()
-
-        else:   
-            pass
-        
     # ?
     @Timer.timer
-    def get_images_waifus_random(self) -> None:
+    def Images_waifus_random(self) -> None:
     
         # * Webdriver chrome activate
         Driver = webdriver.Chrome()
-        Driver.get(self.__URL)
+        Driver.get(self._URL)
 
         # * Waiting time
-        Driver.implicitly_wait(self.__Initial)
+        Driver.implicitly_wait(self._Initial)
         
-        time.sleep(self.__Initial)
+        time.sleep(self._Initial)
         
-        for i in range(self.__Number_images):
+        for i in range(self._Number_folders):
 
-            Button_click = Driver.find_element(By.XPATH, Settings._XPATH_BUTTON_)
+            Button_click = Driver.find_element(By.XPATH, 
+                                               Settings._XPATH_BUTTON_)
             Button_click.click()
             # *
-            time.sleep(self.__Time_interval)
+            time.sleep(self._Time_interval)
 
-            Image = Driver.find_element(By.XPATH, Settings._XPATH_IMAGE_)
+            Image = Driver.find_element(By.XPATH, 
+                                        Settings._XPATH_IMAGE_)
             src = Image.get_attribute('src')
             
             Image_name = "Image_{}.png".format(i)
-            Image_folder = os.path.join(self.__Folder_images, Image_name)
+            Image_folder = os.path.join(self._Folder_images, Image_name)
 
             urllib.request.urlretrieve(src, Image_folder)
 
             # *
-            time.sleep(self.__Time_interval)
+            time.sleep(self._Time_interval)
 
         Driver.close()
     
     @Timer.timer
-    def get_images_waifus_settings(self) -> None:
+    def Images_waifus_settings(self) -> None:
+        
+        Chrome_options = webdriver.ChromeOptions() 
+        Chrome_options.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2}) 
+        Chrome_options.add_argument("--no-sandbox") 
+        Chrome_options.add_argument("--disable-setuid-sandbox") 
+
+        Chrome_options.add_argument("--remote-debugging-port=9222")  # this
+
+        Chrome_options.add_argument("--disable-dev-shm-using") 
+        Chrome_options.add_argument("--disable-extensions") 
+        Chrome_options.add_argument("start-maximized") 
+        Chrome_options.add_argument("disable-infobars")
+
+        Driver = webdriver.Chrome()
+        Driver.maximize_window()
+        Driver.get(self._URL)
+        
+        # * Waiting time
+        Driver.implicitly_wait(self._Initial)
         
         # *
-        for k in range(len(self.__Model)):
+        for k in range(len(self._Data.index)):
             
-            # * Webdriver chrome activate
+            for j in range(len(Settings._XPATH_BUTTON_LIST_)):
 
-            chromeOptions = webdriver.ChromeOptions() 
-            chromeOptions.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2}) 
-            chromeOptions.add_argument("--no-sandbox") 
-            chromeOptions.add_argument("--disable-setuid-sandbox") 
+                Drop_down_model = DropdownModel(Driver, 
+                                                Settings._XPATH_BUTTON_LIST_[j], 
+                                                Settings._XPATH_OPEN_LIST_[j])
 
-            chromeOptions.add_argument("--remote-debugging-port=9222")  # this
-
-            chromeOptions.add_argument("--disable-dev-shm-using") 
-            chromeOptions.add_argument("--disable-extensions") 
-            chromeOptions.add_argument("start-maximized") 
-            chromeOptions.add_argument("disable-infobars")
-
-            Driver = webdriver.Chrome()
-            Driver.maximize_window()
-            Driver.get(self.__URL[k])
-            
-
-            # * Waiting time
-            Driver.implicitly_wait(self.__Initial)
-
-            # * Function dropdown used
-            self.model_dropdown(Driver, 
-                                Settings._XPATH_MODEL_BUTTON_, 
-                                Settings._XPATH_MODEL_OPEN_, 
-                                self.__Model[k])
-            
-            self.model_dropdown(Driver, 
-                                Settings._XPATH_HAIR_COLOR_BUTTON_, 
-                                Settings._XPATH_HAIR_COLOR_OPEN_, 
-                                self.__Hair_color[k])
-            
-            self.model_dropdown(Driver, 
-                                Settings._XPATH_HAIR_STYLE_BUTTON_, 
-                                Settings._XPATH_HAIR_STYLE_OPEN_, 
-                                self.__Hair_style[k])
-            
-            self.model_dropdown(Driver, 
-                                Settings._XPATH_EYE_COLOR_BUTTON_, 
-                                Settings._XPATH_EYE_COLOR_OPEN_, 
-                                self.__Eye_color[k])
+                Drop_down_model.select_option(self._Attributes[k][j])
 
             # * Function on off used
-            self.model_on_off(Driver, 
-                              Settings._XPATH_DARK_SKIN_OFF_BUTTON_, 
-                              Settings._XPATH_DARK_SKIN_RANDOM_BUTTON_, 
-                              Settings._XPATH_DARK_SKIN_ON_BUTTON_, 
-                              self.__Dark_sin[k])
+            for j in range(len(Settings._XPATH_OFF_BUTTON_)):
             
-            self.model_on_off(Driver, 
-                              Settings._XPATH_BLUSH_OFF_BUTTON_, 
-                              Settings._XPATH_BLUSH_RANDOM_BUTTON_, 
-                              Settings._XPATH_BLUSH_ON_BUTTON_,  
-                              self.__Blush[k])
-            
-            self.model_on_off(Driver, 
-                              Settings._XPATH_SMILE_OFF_BUTTON_, 
-                              Settings._XPATH_SMILE_RANDOM_BUTTON_, 
-                              Settings._XPATH_SMILE_ON_BUTTON_, 
-                              self.__Smile[k])
-            
-            self.model_on_off(Driver, 
-                              Settings._XPATH_OPEN_MOUTH_OFF_BUTTON_, 
-                              Settings._XPATH_OPEN_MOUTH_RANDOM_BUTTON_, 
-                              Settings._XPATH_OPEN_MOUTH_ON_BUTTON_, 
-                              self.__Open_mouth[k])
-            
-            self.model_on_off(Driver, 
-                              Settings._XPATH_HAT_OFF_BUTTON_, 
-                              Settings._XPATH_HAT_RANDOM_BUTTON_, 
-                              Settings._XPATH_HAT_ON_BUTTON_, 
-                              self.__Hat[k])
-            
-            self.model_on_off(Driver, 
-                              Settings._XPATH_RIBBON_OFF_BUTTON_, 
-                              Settings._XPATH_RIBBON_RANDOM_BUTTON_, 
-                              Settings._XPATH_RIBBON_ON_BUTTON_, 
-                              self.__Ribbon[k])
-            
-            self.model_on_off(Driver, 
-                              Settings._XPATH_GLASSES_OFF_BUTTON_, 
-                              Settings._XPATH_GLASSES_RANDOM_BUTTON_, 
-                              Settings._XPATH_GLASSES_ON_BUTTON_, 
-                              self.__Glasses[k])
+                ON_OFF_event = OnOffEvent(Driver, 
+                                        Settings._XPATH_OFF_BUTTON_[j], 
+                                        Settings._XPATH_RANDOM_BUTTON_[j], 
+                                        Settings._XPATH_ON_BUTTON_[j])
 
+                ON_OFF_event.select_option(self._Attributes[k][j])
+            
             # * Initial time
-            time.sleep(self.__Initial)
+            time.sleep(self._Initial)
 
             # * Instance epoch
-            for i in range(self.__Epochs[k]):
+            for i in range(self._Epochs[k]):
                 
                 # *
                 Button_click = Driver.find_element(By.XPATH, Settings._XPATH_BUTTON_)
                 Button_click.click()
 
                 # * Interval times
-                time.sleep(self.__Time_interval)
+                time.sleep(self._Time_interval)
 
                 # * Read image
                 Image = Driver.find_element(By.XPATH, Settings._XPATH_IMAGE_)
                 src = Image.get_attribute('src')
                 
                 # * Direction exist
-                Exist_dir = os.path.isdir('{}/Girl_{}_{}_{}'.format(self.__Folder_images, self.__Hair_color[k], self.__Hair_style[k], self.__Eye_color[k])) 
+                Exist_dir = os.path.isdir('{}/Girl_{}_{}_{}'.format(self._Folder_images, 
+                                                                    self._Hair_color[k], 
+                                                                    self._Hair_style[k], 
+                                                                    self._Eye_color[k])) 
 
                 if Exist_dir == False:
-                    New_folder = '{}/Girl_{}_{}_{}'.format(self.__Folder_images, self.__Hair_color[k], self.__Hair_style[k], self.__Eye_color[k])
+                    New_folder = '{}/Girl_{}_{}_{}'.format(self._Folder_images, 
+                                                           self._Hair_color[k], 
+                                                           self._Hair_style[k], 
+                                                           self._Eye_color[k])
                     os.mkdir(New_folder)
                 else:
-                    New_folder = '{}/Girl_{}_{}_{}'.format(self.__Folder_images, self.__Hair_color[k], self.__Hair_style[k], self.__Eye_color[k])
+                    New_folder = '{}/Girl_{}_{}_{}'.format(self._Folder_images, 
+                                                           self._Hair_color[k], 
+                                                           self._Hair_style[k], 
+                                                           self._Eye_color[k])
 
                 # * Name girl images
                 Image_name = "Girl_Image_{}.png".format(i)
@@ -332,7 +179,7 @@ class WaifusDownloadCSV(DownloadGirlsMOE):
                 urllib.request.urlretrieve(src, Image_folder)
 
                 # * Interval times
-                time.sleep(self.__Time_interval)
+                time.sleep(self._Time_interval)
 
             # * Close Google chrome 
             Driver.close()
