@@ -1,30 +1,47 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-class OnOffEvent:
+class OnOffEvent(object):
     def __init__(self, 
-                 driver: webdriver.Chrome, 
-                 xpath_path_on: str, xpath_path_random: str, 
-                 xpath_path_off: str):
+                 Driver: webdriver.Chrome, 
+                 XPATH_ON: str, 
+                 XPATH_Random: str, 
+                 XPATH_OFF: str):
         
-        self.driver = driver
-        self.xpath_path_on = xpath_path_on
-        self.xpath_path_random = xpath_path_random
-        self.xpath_path_off = xpath_path_off
-    
-    def select_option(self, option_picked: str) -> None:
+        self.Driver = Driver
+        self.XPATH_ON = XPATH_ON
+        self.XPATH_Random = XPATH_Random
+        self.XPATH_OFF = XPATH_OFF
+
+    def select_option(self, Option_picked: str) -> None:
         
-        if option_picked == 'ON':
-            button = self.driver.find_element(By.XPATH, self.xpath_path_on)
-            button.click()
+        print(Option_picked)
 
-        elif option_picked == 'Random':
-            button = self.driver.find_element(By.XPATH, self.xpath_path_random)
+        if Option_picked == 'ON':
+            button = WebDriverWait(self.Driver, 0.2).until(
+                EC.presence_of_element_located((By.XPATH, self.XPATH_ON)))
+            
+            #button = self.Driver.find_element(By.XPATH, self.XPATH_ON)
             button.click()
+            print('ON clicked {}'.format(self.XPATH_ON))
 
-        elif option_picked == 'OFF':
-            button = self.driver.find_element(By.XPATH, self.xpath_path_off)
+        elif Option_picked == 'Random':
+            button = WebDriverWait(self.Driver, 0.2).until(
+                EC.presence_of_element_located((By.XPATH, self.XPATH_Random)))
+            
+            #button = self.Driver.find_element(By.XPATH, self.XPATH_Random)
             button.click()
+            print('Random clicked {}'.format(self.XPATH_Random))
+
+        elif Option_picked == 'OFF':
+            button = WebDriverWait(self.Driver, 0.2).until(
+                EC.presence_of_element_located((By.XPATH, self.XPATH_OFF)))
+            
+            #button = self.Driver.find_element(By.XPATH, self.XPATH_OFF)
+            button.click()
+            print('OFF clicked {}'.format(self.XPATH_OFF))
 
         else:   
             pass

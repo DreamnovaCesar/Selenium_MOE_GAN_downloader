@@ -1,8 +1,8 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 
-# OS-specific files
-app/Springer/
-app/src/Data/geckodriver.log
+# Test files
+Test/
 
+# OS-specific files
 app/src/__pycache__/

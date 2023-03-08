@@ -1,10 +1,13 @@
 from ..src.domain.DataLoaderCSV import DataLoaderCSV
-from ..src.domain.DownloadGirlsCSV import WaifusDownloadCSV
+from .domain.DownloadGirlsSettings import DownloadGirlsSettings
+from .domain.DownloadGirlsRandom import DownloadGirlsRandom
 
-Reader_CSV = DataLoaderCSV('app\src\data\Waifus_data_csv.csv')
+'''Reader_CSV = DataLoaderCSV('app\src\data\Waifus_data_csv.csv')
 
-W = WaifusDownloadCSV(Reader_CSV, 
-                  'app\src\data\Waifus_data_csv.csv', 
-                  'app\src\data')
+W = DownloadGirlsSettings(Reader_CSV, 
+                        'app\src\data\Waifus_data_csv.csv', 
+                        'app\src\data')'''
 
-W.Images_waifus_settings()
+W = DownloadGirlsRandom('app\src\data', 15, 30)
+
+W.Download_images()
