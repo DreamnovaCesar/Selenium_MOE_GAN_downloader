@@ -23,7 +23,7 @@ class OnOffEvent(object):
             button = WebDriverWait(self.Driver, 0.2).until(
                 EC.presence_of_element_located((By.XPATH, self.XPATH_ON)))
             
-            #button = self.Driver.find_element(By.XPATH, self.XPATH_ON)
+            button = self.Driver.find_element(By.XPATH, self.XPATH_ON)
             button.click()
             print('ON clicked {}'.format(self.XPATH_ON))
 
@@ -31,7 +31,7 @@ class OnOffEvent(object):
             button = WebDriverWait(self.Driver, 0.2).until(
                 EC.presence_of_element_located((By.XPATH, self.XPATH_Random)))
             
-            #button = self.Driver.find_element(By.XPATH, self.XPATH_Random)
+            button = self.Driver.find_element(By.XPATH, self.XPATH_Random)
             button.click()
             print('Random clicked {}'.format(self.XPATH_Random))
 
@@ -39,7 +39,7 @@ class OnOffEvent(object):
             button = WebDriverWait(self.Driver, 0.2).until(
                 EC.presence_of_element_located((By.XPATH, self.XPATH_OFF)))
             
-            #button = self.Driver.find_element(By.XPATH, self.XPATH_OFF)
+            button = self.Driver.find_element(By.XPATH, self.XPATH_OFF)
             button.click()
             print('OFF clicked {}'.format(self.XPATH_OFF))
 

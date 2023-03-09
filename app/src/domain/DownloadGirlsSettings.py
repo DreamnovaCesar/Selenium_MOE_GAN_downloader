@@ -27,75 +27,76 @@ from ..Utilities import Settings
 from typing import Optional
 
 class DownloadGirlsSettings(DownloadGirlsMOE):
-    
     """
-    A class for downloading waifu images using Girls Moe, based on attributes specified in a CSV file.
-    
+    Downloads images of waifus with specified attributes from the MakeGirlsMoe website.
+
     Parameters
     ----------
     Reader_CSV : DataLoaderCSV
-        An instance of `DataLoaderCSV` containing the CSV data.
+        An instance of `DataLoaderCSV` containing the data to use for downloading the images.
     CSV : str
-        The path to the CSV file containing the waifu attributes.
+        The path to the CSV file used to load the data.
     Folder : str
-        The path to the folder where the images will be saved.
-    Number_folders : int or None, optional
-        The number of image folders to download. If `None`, all folders in the CSV file will be downloaded.
-    
+        The path to the folder where the downloaded images will be stored.
+    Number_folders : int, optional
+        The number of folders to create in the `Folder` directory. If not specified, one folder will be created for each row in the CSV file.
+
     Attributes
     ----------
-    _Reader_CSV : DataLoaderCSV
-        An instance of `DataLoaderCSV` containing the CSV data.
-    _CSV : str
-        The path to the CSV file containing the waifu attributes.
-    _Folder_images : str
-        The path to the folder where the images will be saved.
-    _Number_folders : int or None, optional
-        The number of image folders to download. If `None`, all folders in the CSV file will be downloaded.
-    _URL : str
-        The URL for the Girls Moe website.
-    _Time_interval : float
-        The time interval between each image download.
-    _Initial : int
-        The initial waiting time before starting the download process.
-    _Data : pandas DataFrame
-        The data in the CSV file.
-    _Attributes : list of str
-        The list of attribute names in the CSV file.
-    _Model : list of str
-        The list of model names in the CSV file.
-    _Hair_color : list of str
-        The list of hair color names in the CSV file.
-    _Hair_style : list of str
-        The list of hair style names in the CSV file.
-    _Eye_color : list of str
-        The list of eye color names in the CSV file.
-    _Dark_sin : list of str
-        The list of dark skin attributes in the CSV file.
-    _Blush : list of str
-        The list of blush attributes in the CSV file.
-    _Smile : list of str
-        The list of smile attributes in the CSV file.
-    _Open_mouth : list of str
-        The list of open mouth attributes in the CSV file.
-    _Hat : list of str
-        The list of hat attributes in the CSV file.
-    _Ribbon : list of str
-        The list of ribbon attributes in the CSV file.
-    _Glasses : list of str
-        The list of glasses attributes in the CSV file.
-    _Epochs : list of int
-        The list of epoch numbers in the CSV file.
     Chrome_options : webdriver.ChromeOptions
-        The Chrome options for the web driver.
-    
+        The Chrome options used to configure the Chrome driver.
+    _Reader_CSV : DataLoaderCSV
+        The instance of `DataLoaderCSV` used to load the data.
+    _CSV : str
+        The path to the CSV file used to load the data.
+    _Folder_images : str
+        The path to the folder where the downloaded images will be stored.
+    _Number_folders : int
+        The number of folders to create in the `Folder` directory.
+    _URL : str
+        The URL of the MakeGirlsMoe website.
+    _Time_interval_chooses : float
+        The time interval in seconds between selecting dropdown options.
+    _Time_interval : float
+        The time interval in seconds between clicking buttons and waiting for the page to load.
+    _implicitly : int
+        The maximum time in seconds to wait for an element to be found on the page.
+    _Initial : int
+        The initial time in seconds to wait before starting to select dropdown options.
+    _Data : np.ndarray
+        The data loaded from the CSV file.
+    _Attributes : List[List[str]]
+        The list of attribute values for each row of the CSV file.
+    _Model : str
+        The model used to generate the images.
+    _Hair_color : List[str]
+        The list of hair colors for each row of the CSV file.
+    _Hair_style : List[str]
+        The list of hair styles for each row of the CSV file.
+    _Eye_color : List[str]
+        The list of eye colors for each row of the CSV file.
+    _Dark_sin : List[str]
+        The list of dark skin options for each row of the CSV file.
+    _Blush : List[str]
+        The list of blush options for each row of the CSV file.
+    _Smile : List[str]
+        The list of smile options for each row of the CSV file.
+    _Open_mouth : List[str]
+        The list of open mouth options for each row of the CSV file.
+    _Hat : List[str]
+        The list of hat options for each row of the CSV file.
+    _Ribbon : List[str]
+        The list of ribbon options for each row of the CSV file.
+    _Glasses : List[str]
+        The list of glasses options for each row of the CSV file.
+    _Epochs : List[int]
+        The list of number of images to download for each row of the CSV file.
+
     Methods
     -------
-    Images_waifus_random() -> None
-        Downloads random waifu images and saves them to the specified folder.
-    Images_waifus_settings() -> None
-        Downloads waifu images based on the specified attributes and saves them to the specified folder.
-    
+    Download_images()
+        Downloads the images of waifus with specified attributes from the MakeGirlsMoe website.
+
     """
 
     # * Initializing (Constructor)
@@ -105,6 +106,21 @@ class DownloadGirlsSettings(DownloadGirlsMOE):
                  Folder: str, 
                  Number_folders: Optional[int] = None) -> None:
 
+        """
+        Initializes a new DownloadGirlsRandom instance.
+
+        Parameters
+        ----------
+        Reader_CSV : DataLoaderCSV
+            A DataLoaderCSV instance.
+        CSV : str
+            The path of the csv file.
+        Folder : str
+            The folder where the downloaded images will be saved.
+        Number_folders : int, optional
+            The number of different combinations of attributes to use. Default is None.
+        """
+        
         # * Instance attributes
         self._Reader_CSV = Reader_CSV
         self._CSV = CSV
@@ -112,9 +128,10 @@ class DownloadGirlsSettings(DownloadGirlsMOE):
         self._Number_folders = Number_folders
 
         self._URL = 'https://make.girls.moe/#/'
-        self._Time_interval = 0.05
+        self._Time_interval_chooses = 0.5
+        self._Time_interval = 0.01
         self._implicitly = 20
-        self._Initial = 3
+        self._Initial = 5
         
         self._Data = Reader_CSV.Data
         self._Attributes = Reader_CSV.Attributes
@@ -146,7 +163,10 @@ class DownloadGirlsSettings(DownloadGirlsMOE):
         Driver.implicitly_wait(self._implicitly)
         
         for k in range(len(self._Data.index)):
-                  
+            
+            # * Interval times
+            time.sleep(self._Initial)
+
             for j in range(len(Settings._XPATH_BUTTON_LIST_)):
 
                 Drop_down_model = Dropdown(Driver, 
@@ -154,6 +174,14 @@ class DownloadGirlsSettings(DownloadGirlsMOE):
                                            Settings._XPATH_OPEN_LIST_[j])
 
                 Drop_down_model.select_option(self._Attributes[j][k])
+
+                # * Interval times
+                time.sleep(self._Time_interval_chooses) 
+
+            if(self._Model == 'Amaryllis 128x128 Ver.170716 (3.8MB)'):
+                Settings._XPATH_OFF_BUTTON_.pop()
+                Settings._XPATH_RANDOM_BUTTON_.pop()
+                Settings._XPATH_ON_BUTTON_.pop()
 
             # * Function on off used
             for n in range(len(Settings._XPATH_OFF_BUTTON_)):

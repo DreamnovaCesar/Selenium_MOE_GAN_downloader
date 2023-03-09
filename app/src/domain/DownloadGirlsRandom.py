@@ -28,82 +28,74 @@ from ..Utilities import Settings
 from typing import Optional
 
 class DownloadGirlsRandom(DownloadGirlsMOE):
-    
     """
-    A class for downloading waifu images using Girls Moe, based on attributes specified in a CSV file.
-    
+    A class for downloading images of waifus with specified attributes from the MakeGirlsMoe website.
+
     Parameters
     ----------
-    Reader_CSV : DataLoaderCSV
-        An instance of `DataLoaderCSV` containing the CSV data.
-    CSV : str
-        The path to the CSV file containing the waifu attributes.
     Folder : str
-        The path to the folder where the images will be saved.
-    Number_folders : int or None, optional
-        The number of image folders to download. If `None`, all folders in the CSV file will be downloaded.
-    
+        The folder where the downloaded images will be saved.
+    Number_images : int, optional
+        The number of images to download for each combination of attributes. Default is 20.
+    Number_folders : int, optional
+        The number of different combinations of attributes to use. Default is 2.
+
     Attributes
     ----------
-    _Reader_CSV : DataLoaderCSV
-        An instance of `DataLoaderCSV` containing the CSV data.
-    _CSV : str
-        The path to the CSV file containing the waifu attributes.
     _Folder_images : str
-        The path to the folder where the images will be saved.
-    _Number_folders : int or None, optional
-        The number of image folders to download. If `None`, all folders in the CSV file will be downloaded.
+        The folder where the downloaded images will be saved.
+    _Number_images : int
+        The number of images to download for each combination of attributes.
+    _Number_folders : int
+        The number of different combinations of attributes to use.
     _URL : str
-        The URL for the Girls Moe website.
+        The URL of the MakeGirlsMoe website.
+    _Time_interval_chooses : float
+        The time interval (in seconds) to wait after selecting an attribute from a dropdown list.
     _Time_interval : float
-        The time interval between each image download.
+        The time interval (in seconds) to wait after clicking a button or downloading an image.
+    _implicitly : int
+        The implicit wait time (in seconds) for the webdriver.
     _Initial : int
-        The initial waiting time before starting the download process.
-    _Data : pandas DataFrame
-        The data in the CSV file.
-    _Attributes : list of str
-        The list of attribute names in the CSV file.
-    _Model : list of str
-        The list of model names in the CSV file.
-    _Hair_color : list of str
-        The list of hair color names in the CSV file.
-    _Hair_style : list of str
-        The list of hair style names in the CSV file.
-    _Eye_color : list of str
-        The list of eye color names in the CSV file.
-    _Dark_sin : list of str
-        The list of dark skin attributes in the CSV file.
-    _Blush : list of str
-        The list of blush attributes in the CSV file.
-    _Smile : list of str
-        The list of smile attributes in the CSV file.
-    _Open_mouth : list of str
-        The list of open mouth attributes in the CSV file.
-    _Hat : list of str
-        The list of hat attributes in the CSV file.
-    _Ribbon : list of str
-        The list of ribbon attributes in the CSV file.
-    _Glasses : list of str
-        The list of glasses attributes in the CSV file.
-    _Epochs : list of int
-        The list of epoch numbers in the CSV file.
+        The initial wait time (in seconds) before starting to select attributes and download images.
     Chrome_options : webdriver.ChromeOptions
-        The Chrome options for the web driver.
+        The options for the Google Chrome browser.
+    Models : tuple
+        The available models for waifus.
+    Hair_colors : tuple
+        The available colors for waifu hair.
+    Hair_styles : tuple
+        The available styles for waifu hair.
+    Eye_color : tuple
+        The available colors for waifu eyes.
+    Toggle : tuple
+        The available options for the on/off toggles.
     
     Methods
     -------
-    Images_waifus_random() -> None
-        Downloads random waifu images and saves them to the specified folder.
-    Images_waifus_settings() -> None
-        Downloads waifu images based on the specified attributes and saves them to the specified folder.
-    
+    Download_images()
+        Downloads images of waifus with specified attributes from the MakeGirlsMoe website.
     """
 
     # * Initializing (Constructor)
+    
     def __init__(self, 
                  Folder: str, 
                  Number_images : int = 20,
                  Number_folders : int = 2) -> None:
+
+        """
+        Initializes a new DownloadGirlsRandom instance.
+
+        Parameters
+        ----------
+        Folder : str
+            The folder where the downloaded images will be saved.
+        Number_images : int, optional
+            The number of images to download for each combination of attributes. Default is 20.
+        Number_folders : int, optional
+            The number of different combinations of attributes to use. Default is 2.
+        """
 
         # * Instance attributes
         self._Folder_images = Folder
@@ -111,7 +103,7 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
         self._Number_folders = Number_folders
 
         self._URL = 'https://make.girls.moe/#/'
-        self._Time_interval_chooses = 0.2
+        self._Time_interval_chooses = 0.5
         self._Time_interval = 0.01
         self._implicitly = 20
         self._Initial = 5
@@ -124,8 +116,10 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
         """
         Downloads images of waifus with specified attributes from the MakeGirlsMoe website.
         """
-        Dropdowns = []
 
+        # * Create lists of dropdown options for each attribute
+        Dropdowns = []
+        
         self.Models = ('Amaryllis 128x128 Ver.170716 (3.8MB)', 
                        'Bouvardia 128x128 Ver.171123 (9.8MB)', 
                        'Bouvardia 256x256 Ver.171125 (9.9MB)', 
@@ -166,34 +160,41 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
                           'Black',
                           'Orange')
         
+        # * Add each list of dropdown options to a larger list
         Dropdowns.append(self.Models)
         Dropdowns.append(self.Hair_colors)
         Dropdowns.append(self.Hair_styles)
         Dropdowns.append(self.Eye_color)
 
+        # * Create list of toggle options
         self.Toggle = ('ON',
                        'Random',
                        'OFF')
         
-
+        # * Launch Google Chrome browser using specified options
         Driver = webdriver.Chrome(options = self.Chrome_options)
         #Driver.maximize_window()
         Driver.get(self._URL)
         Driver.implicitly_wait(self._implicitly)
         
-        for k in range(self._Number_folders):
+        # * Loop through the specified number of folders
+        for _ in range(self._Number_folders):
             
-            Choices_dropdowns = []     
-
             # * Interval times
             time.sleep(self._Initial)
 
+            # * Create list of randomly selected dropdown options for each attribute
+            Choices_dropdowns = []     
+            
+            # * Loop through each dropdown element on the page
             for j in range(len(Settings._XPATH_BUTTON_LIST_)):
                 
+                # * Add a randomly selected option from each dropdown to the list
                 for l in range(len(Settings._XPATH_BUTTON_LIST_)):
 
                     Choices_dropdowns.append(random.choice(Dropdowns[l]))
-                              
+
+                # * Select the chosen option for the dropdown
                 Drop_down_model = Dropdown(Driver, 
                                            Settings._XPATH_BUTTON_LIST_[j], 
                                            Settings._XPATH_OPEN_LIST_[j])
@@ -203,11 +204,19 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
                 # * Interval times
                 time.sleep(self._Time_interval_chooses)   
 
-            # * Function on off used
+            # If the chosen model is Amaryllis, remove the toggle buttons
+            if(Choices_dropdowns[0] == 'Amaryllis 128x128 Ver.170716 (3.8MB)'):
+                Settings._XPATH_OFF_BUTTON_.pop()
+                Settings._XPATH_RANDOM_BUTTON_.pop()
+                Settings._XPATH_ON_BUTTON_.pop()
+            
+            # * Loop through each toggle button element on the page
             for j in range(len(Settings._XPATH_OFF_BUTTON_)):
                 
+                # * Select a randomly chosen toggle option
                 Toggle = random.choice(self.Toggle)
 
+                # * Click the corresponding toggle button
                 ON_OFF_event = OnOffEvent(Driver, 
                                           Settings._XPATH_OFF_BUTTON_[j], 
                                           Settings._XPATH_RANDOM_BUTTON_[j], 
