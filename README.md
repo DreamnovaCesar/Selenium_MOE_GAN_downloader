@@ -11,11 +11,23 @@
 
 The purpose of the website is to provide a fun and accessible tool for generating anime-style characters for use in various projects, such as creating digital artwork or designing characters for games. The generated characters can be used for personal or commercial purposes. Using the website is simple and straightforward. You can select the various attributes of the character you want to generate, and the website will display the resulting image. You can then download the image in PNG format or share it on social media.
 
-Selenium is an open-source software testing framework that enables you to automate web browsers for testing purposes. It supports multiple programming languages including Python, Java, C#, and others. With Selenium, you can write scripts to simulate a user's interaction with a web application, such as clicking buttons, filling out forms, and navigating between pages. This allows you to catch bugs and ensure the proper functioning of your application.
+
 
 ## Setup
 
 To create a virtual environment with using Anaconda, follow these steps:
+
+Clone github repository in your local system.
+
+```python
+git clone https://github.com/DreamnovaCesar/Selenium_MOE_GAN_downloader.git
+```
+
+Move in Selenium_MOE_GAN_downloader repository
+
+```python
+cd Selenium_MOE_GAN_downloader
+```
 
 Open the Anaconda Prompt by clicking the Start button and typing "Anaconda Prompt".
 Type the following command to create a new virtual environment called "tfenv":
@@ -36,6 +48,28 @@ Finally, install requirements.txt.
 conda install requirements.txt
 ```
 
+when creating the virtual environment, as this algorithm does not plan to be a library at the moment. You will have to use the following CLI code for activation:
+
+```python
+python -m app.src.main
+```
+
+$ ./tree-md .
+# Project tree
+
+.
+ * [tree-md](./tree-md)
+ * [dir2](./dir2)
+   * [file21.ext](./dir2/file21.ext)
+   * [file22.ext](./dir2/file22.ext)
+   * [file23.ext](./dir2/file23.ext)
+ * [dir1](./dir1)
+   * [file11.ext](./dir1/file11.ext)
+   * [file12.ext](./dir1/file12.ext)
+ * [file_in_root.ext](./file_in_root.ext)
+ * [README.md](./README.md)
+ * [dir3](./dir3)
+ 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Connect with me

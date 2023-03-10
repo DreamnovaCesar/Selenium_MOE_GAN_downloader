@@ -29,7 +29,11 @@ options = {
     DownloadFromJSON(DownloadGirlsJSON, JsonFileHandler),
 ]'''
 
-# ? If the script is being run directly, create and display the menu
-if __name__ == "__main__":
+# ? Create and display the menu
+def main():
     menu = Menu(options);
     menu.display();
+
+# ? If the script is being run directly, create and display the menu
+if __name__ == "__main__":
+    main();
