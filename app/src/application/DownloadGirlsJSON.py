@@ -23,75 +23,57 @@ from typing import Dict
 
 class DownloadGirlsJSON(DownloadGirlsMOE):
     """
-    Downloads images of waifus with specified attributes from the MakeGirlsMoe website.
+    A class for downloading images of anime girls from the website
+    https://make.girls.moe/#/ using a JSON file that specifies the
+    attributes of the girls to download.
 
     Parameters
     ----------
-    Reader_CSV : DataLoaderCSV
-        An instance of `DataLoaderCSV` containing the data to use for downloading the images.
-    CSV : str
-        The path to the CSV file used to load the data.
     Folder : str
-        The path to the folder where the downloaded images will be stored.
-    Number_folders : int, optional
-        The number of folders to create in the `Folder` directory. If not specified, one folder will be created for each row in the CSV file.
+        The folder path to save the downloaded images.
+    JSON_file : dict
+        A dictionary that specifies the attributes of the girls to download.
+    Epochs : int
+        The number of epochs to run the program.
 
     Attributes
     ----------
-    Chrome_options : webdriver.ChromeOptions
-        The Chrome options used to configure the Chrome driver.
-    _Reader_CSV : DataLoaderCSV
-        The instance of `DataLoaderCSV` used to load the data.
-    _CSV : str
-        The path to the CSV file used to load the data.
     _Folder_images : str
-        The path to the folder where the downloaded images will be stored.
-    _Number_folders : int
-        The number of folders to create in the `Folder` directory.
+        The folder path to save the downloaded images.
+    _JSON_file : dict
+        A dictionary that specifies the attributes of the girls to download.
+    _Epochs : int
+        The number of epochs to run the program.
     _URL : str
-        The URL of the MakeGirlsMoe website.
+        The URL of the website to download images from.
     _Time_interval_chooses : float
-        The time interval in seconds between selecting dropdown options.
+        The time interval to wait before making a selection.
     _Time_interval : float
-        The time interval in seconds between clicking buttons and waiting for the page to load.
+        The time interval to wait before performing the next action.
     _implicitly : int
-        The maximum time in seconds to wait for an element to be found on the page.
+        The amount of time in seconds to wait for a page to load.
     _Initial : int
-        The initial time in seconds to wait before starting to select dropdown options.
-    _Data : np.ndarray
-        The data loaded from the CSV file.
-    _Attributes : List[List[str]]
-        The list of attribute values for each row of the CSV file.
-    _Model : str
-        The model used to generate the images.
-    _Hair_color : List[str]
-        The list of hair colors for each row of the CSV file.
-    _Hair_style : List[str]
-        The list of hair styles for each row of the CSV file.
-    _Eye_color : List[str]
-        The list of eye colors for each row of the CSV file.
-    _Dark_sin : List[str]
-        The list of dark skin options for each row of the CSV file.
-    _Blush : List[str]
-        The list of blush options for each row of the CSV file.
-    _Smile : List[str]
-        The list of smile options for each row of the CSV file.
-    _Open_mouth : List[str]
-        The list of open mouth options for each row of the CSV file.
-    _Hat : List[str]
-        The list of hat options for each row of the CSV file.
-    _Ribbon : List[str]
-        The list of ribbon options for each row of the CSV file.
-    _Glasses : List[str]
-        The list of glasses options for each row of the CSV file.
-    _Epochs : List[int]
-        The list of number of images to download for each row of the CSV file.
+        The number of images to start with.
+    _JSON_file_keys_list : list
+        A list of keys in the JSON file.
+    _JSON_file_vals_list : list
+        A list of values in the JSON file.
+    Chrome_options : webdriver.ChromeOptions
+        The Chrome options for the Selenium webdriver.
 
-    Methods
+    Returns
     -------
-    Download_images()
-        Downloads the images of waifus with specified attributes from the MakeGirlsMoe website.
+    None
 
+    Notes
+    -----
+    This class inherits from DownloadGirlsMOE.
+
+    Examples
+    --------
+    >>> JSON_file = {"hair": ["blonde", "pink"], "attribute": ["smiling"]}
+    >>> dl = DownloadGirlsJSON('images', JSON_file, 5)
+    >>> dl.download()
     """
 
     # * Initializing (Constructor)
@@ -102,20 +84,18 @@ class DownloadGirlsJSON(DownloadGirlsMOE):
                  ) -> None:
 
         """
-        Initializes a new DownloadGirlsRandom instance.
+        Initializes a new DownloadGirlsJSON instance.
 
         Parameters
         ----------
-        Reader_CSV : DataLoaderCSV
-            A DataLoaderCSV instance.
-        CSV : str
-            The path of the csv file.
+        JSON_file : str
+            The path of the JSON file.
         Folder : str
             The folder where the downloaded images will be saved.
-        Number_folders : int, optional
-            The number of different combinations of attributes to use. Default is None.
+        Epochs : int
+            The number of different combinations of attributes to use.
         """
-        
+
         # * Instance attributes
         self._Folder_images = Folder
         self._JSON_file = JSON_file
