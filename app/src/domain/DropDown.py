@@ -35,9 +35,9 @@ class Dropdown(object):
         None
         """
 
-        self.Driver = Driver
-        self.XPATH = XPATH
-        self.XPATH_list = XPATH_list
+        self.Driver = Driver;
+        self.XPATH = XPATH;
+        self.XPATH_list = XPATH_list;
     
     def select_option(self, Option_picked: str) -> None:
         """
@@ -54,36 +54,36 @@ class Dropdown(object):
         """
 
         # * List of options
-        Options_list = []
+        Options_list = [];
         
         # * Waits until the dropdown button is present on the page
         Button = WebDriverWait(self.Driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, self.XPATH)))
+            EC.presence_of_element_located((By.XPATH, self.XPATH)));
         
         '''button = self.driver.find_element(By.XPATH, self.XPATH)'''
-        Button.click()
+        Button.click();
 
         # * Find the dropdown options list
         Dropdown = WebDriverWait(self.Driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, self.XPATH_list)))
+            EC.presence_of_element_located((By.XPATH, self.XPATH_list)));
         
-        Dropdown = self.Driver.find_elements(By.XPATH, self.XPATH_list)
+        Dropdown = self.Driver.find_elements(By.XPATH, self.XPATH_list);
         
         # * Find the span elements inside each option and add them to the list of options
         for i, _ in enumerate(Dropdown):
-            Options = Dropdown[i].find_elements(By.TAG_NAME, 'span')
+            Options = Dropdown[i].find_elements(By.TAG_NAME, 'span');
         
         # * Find the index of the selected option in the list of options
         for _, Option in enumerate(Options):
-            Options_list.append(Option.text)
+            Options_list.append(Option.text);
         
-        print('--------- {}'.format(Options_list))
+        print('--------- {}'.format(Options_list));
 
         # * Find the index of the selected option in the list of options
-        Option_index = Options_list.index(Option_picked)
+        Option_index = Options_list.index(Option_picked);
         
-        print('/// {}'.format(Option_picked))
+        print('/// {}'.format(Option_picked));
 
         # * Click the selected option
-        Options[Option_index].click()
+        Options[Option_index].click();
         

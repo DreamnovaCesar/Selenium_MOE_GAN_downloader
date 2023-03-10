@@ -45,10 +45,10 @@ class OnOffEvent(object):
             The XPath of the "OFF" button.
         """
 
-        self.Driver = Driver
-        self.XPATH_ON = XPATH_ON
-        self.XPATH_Random = XPATH_Random
-        self.XPATH_OFF = XPATH_OFF
+        self.Driver = Driver;
+        self.XPATH_ON = XPATH_ON;
+        self.XPATH_Random = XPATH_Random;
+        self.XPATH_OFF = XPATH_OFF;
 
     def select_option(self, Option_picked: str) -> None:
         """
@@ -65,37 +65,37 @@ class OnOffEvent(object):
         """
 
         # * Print the option that was picked
-        print(Option_picked)
+        print(Option_picked);
 
         # * If ON is selected
-        if Option_picked == 'ON':
+        if(Option_picked == 'ON'):
             # * Wait for the element to be present
             button = WebDriverWait(self.Driver, 0.2).until(
-                EC.presence_of_element_located((By.XPATH, self.XPATH_ON)))
+                EC.presence_of_element_located((By.XPATH, self.XPATH_ON)));
             
             #button = self.Driver.find_element(By.XPATH, self.XPATH_ON)
-            button.click()
-            print('ON clicked {}'.format(self.XPATH_ON))
+            button.click();
+            print('ON clicked {}'.format(self.XPATH_ON));
 
         # * If Random is selected
-        elif Option_picked == 'Random':
+        elif(Option_picked == 'Random'):
             # * Wait for the element to be present
             button = WebDriverWait(self.Driver, 0.2).until(
-                EC.presence_of_element_located((By.XPATH, self.XPATH_Random)))
+                EC.presence_of_element_located((By.XPATH, self.XPATH_Random)));
             
             #button = self.Driver.find_element(By.XPATH, self.XPATH_Random)
-            button.click()
-            print('Random clicked {}'.format(self.XPATH_Random))
+            button.click();
+            print('Random clicked {}'.format(self.XPATH_Random));
 
         # * If OFF is selected
-        elif Option_picked == 'OFF':
+        elif(Option_picked == 'OFF'):
             # * Wait for the element to be present
             button = WebDriverWait(self.Driver, 0.2).until(
-                EC.presence_of_element_located((By.XPATH, self.XPATH_OFF)))
+                EC.presence_of_element_located((By.XPATH, self.XPATH_OFF)));
             
            # button = self.Driver.find_element(By.XPATH, self.XPATH_OFF)
-            button.click()
-            print('OFF clicked {}'.format(self.XPATH_OFF))
+            button.click();
+            print('OFF clicked {}'.format(self.XPATH_OFF));
 
         else:   
             pass

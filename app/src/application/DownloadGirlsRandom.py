@@ -93,19 +93,19 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
         """
 
         # * Instance attributes
-        self._Folder_images = Folder
-        self._Number_images = int(Number_images)
-        self._Number_folders = int(Number_folders)
+        self._Folder_images = Folder;
+        self._Number_images = int(Number_images);
+        self._Number_folders = int(Number_folders);
 
-        self._URL = 'https://make.girls.moe/#/'
-        self._JSON_folder = 'app\src\data\JSON'
-        self._Time_interval_chooses = 0.5
-        self._Time_interval = 0.01
-        self._implicitly = 20
-        self._Initial = 5
+        self._URL = 'https://make.girls.moe/#/';
+        self._JSON_folder = 'app\src\data\JSON';
+        self._Time_interval_chooses = 0.5;
+        self._Time_interval = 0.01;
+        self._implicitly = 20;
+        self._Initial = 5;
         
-        self.Chrome_options = webdriver.ChromeOptions() 
-        self.Chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        self.Chrome_options = webdriver.ChromeOptions();
+        self.Chrome_options.add_experimental_option('excludeSwitches', ['enable-logging']);
 
     def Download_images(self) -> None:
         """
@@ -113,21 +113,21 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
         """
 
         # * Create lists of dropdown options for each attribute
-        Dropdowns = []
+        Dropdowns = [];
 
         # * Create a dict to save every parameter
-        Data_json = {}
+        Data_json = {};
         
         # * Keys for the JSON file
         Keys_dropdown = ('Model', 'Hair_color', 'Hair_style', 'Eye_color')
         Keys_toggle = ('Button_toggle_0', 'Button_toggle_1', 'Button_toggle_2', 
                        'Button_toggle_3', 'Button_toggle_4', 'Button_toggle_5',
-                       'Button_toggle_6')
+                       'Button_toggle_6');
 
         self.Models = ('Amaryllis 128x128 Ver.170716 (3.8MB)', 
                        'Bouvardia 128x128 Ver.171123 (9.8MB)', 
                        'Bouvardia 256x256 Ver.171125 (9.9MB)', 
-                       'Camellia 256x256 Ver.171219 (9.9MB)')
+                       'Camellia 256x256 Ver.171219 (9.9MB)');
         
         self.Hair_colors = ('Random',
                             'Blonde',
@@ -142,14 +142,14 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
                             'White',
                             'Orange',
                             'Aqua',
-                            'Grey')
+                            'Grey');
         
         self.Hair_styles = ('Random',
                             'Long Hair',
                             'Short Hair',
                             'Twin Tail',
                             'Drill Hair',
-                            'Ponytail')
+                            'Ponytail');
         
         
         self.Eye_color = ('Random',
@@ -162,33 +162,33 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
                           'Pink',
                           'Aqua',
                           'Black',
-                          'Orange')
+                          'Orange');
         
         # * Add each list of dropdown options to a larger list
-        Dropdowns.append(self.Models)
-        Dropdowns.append(self.Hair_colors)
-        Dropdowns.append(self.Hair_styles)
-        Dropdowns.append(self.Eye_color)
+        Dropdowns.append(self.Models);
+        Dropdowns.append(self.Hair_colors);
+        Dropdowns.append(self.Hair_styles);
+        Dropdowns.append(self.Eye_color);
 
         # * Create list of toggle options
         self.Toggle = ('ON',
                        'Random',
-                       'OFF')
+                       'OFF');
         
         # * Launch Google Chrome browser using specified options
-        Driver = webdriver.Chrome(options = self.Chrome_options)
-        #Driver.maximize_window()
-        Driver.get(self._URL)
-        Driver.implicitly_wait(self._implicitly)
+        Driver = webdriver.Chrome(options = self.Chrome_options);
+        #Driver.maximize_window();
+        Driver.get(self._URL);
+        Driver.implicitly_wait(self._implicitly);
         
         # * Loop through the specified number of folders
         for _ in range(self._Number_folders):
             
             # * Interval times
-            time.sleep(self._Initial)
+            time.sleep(self._Initial);
 
             # * Create list of randomly selected dropdown options for each attribute
-            Choices_dropdowns = []     
+            Choices_dropdowns = [];   
             
             # * Loop through each dropdown element on the page
             for j in range(len(Settings._XPATH_BUTTON_LIST_)):
@@ -196,106 +196,106 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
                 # * Add a randomly selected option from each dropdown to the list
                 for l in range(len(Settings._XPATH_BUTTON_LIST_)):
 
-                    Choices_dropdowns.append(random.choice(Dropdowns[l]))
+                    Choices_dropdowns.append(random.choice(Dropdowns[l]));
 
                     # * Add the Choices_dropdowns data to the dict
-                    Data_json[Keys_dropdown[l]] = Choices_dropdowns[l]
+                    Data_json[Keys_dropdown[l]] = Choices_dropdowns[l];
 
                 # * Select the chosen option for the dropdown
                 Drop_down_model = Dropdown(Driver, 
                                            Settings._XPATH_BUTTON_LIST_[j], 
                                            Settings._XPATH_OPEN_LIST_[j])
 
-                Drop_down_model.select_option(Choices_dropdowns[j])    
+                Drop_down_model.select_option(Choices_dropdowns[j]);
     
                 # * Interval times
-                time.sleep(self._Time_interval_chooses)   
+                time.sleep(self._Time_interval_chooses);   
 
             # If the chosen model is Amaryllis, remove the toggle buttons
             if(Choices_dropdowns[0] == 'Amaryllis 128x128 Ver.170716 (3.8MB)'):
-                Settings._XPATH_OFF_BUTTON_.pop()
-                Settings._XPATH_RANDOM_BUTTON_.pop()
-                Settings._XPATH_ON_BUTTON_.pop()
+                Settings._XPATH_OFF_BUTTON_.pop();
+                Settings._XPATH_RANDOM_BUTTON_.pop();
+                Settings._XPATH_ON_BUTTON_.pop();
             
             # * Loop through each toggle button element on the page
             for j in range(len(Settings._XPATH_OFF_BUTTON_)):
                 
                 # * Select a randomly chosen toggle option
-                Toggle = random.choice(self.Toggle)
+                Toggle = random.choice(self.Toggle);
                 
                 # * Add the toggle data to the dict
-                Data_json[Keys_toggle[j]] = Toggle
+                Data_json[Keys_toggle[j]] = Toggle;
 
                 # * Click the corresponding toggle button
                 ON_OFF_event = OnOffEvent(Driver, 
                                           Settings._XPATH_OFF_BUTTON_[j], 
                                           Settings._XPATH_RANDOM_BUTTON_[j], 
-                                          Settings._XPATH_ON_BUTTON_[j])
+                                          Settings._XPATH_ON_BUTTON_[j]);
 
-                ON_OFF_event.select_option(Toggle)
+                ON_OFF_event.select_option(Toggle);
 
             # * Path name
             New_folder = '{}/Girl_{}_{}_{}'.format(self._Folder_images,
                                                 Choices_dropdowns[1], 
                                                 Choices_dropdowns[2], 
-                                                Choices_dropdowns[3])
+                                                Choices_dropdowns[3]);
 
             # * Path exist
-            Exist_dir = os.path.isdir(New_folder) 
+            Exist_dir = os.path.isdir(New_folder) ;
 
-            if Exist_dir == False:
-                os.mkdir(New_folder)
+            if(Exist_dir) == False:
+                os.mkdir(New_folder);
             else:
-                New_folder
+                New_folder;
 
             # * Interval times
-            time.sleep(self._Initial)
+            time.sleep(self._Initial);
 
             # * Instance epoch
             for i in range(self._Number_images):
                 
                 # * Waits until the search box is present on the page
                 Button_click = WebDriverWait(Driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, Settings._XPATH_BUTTON_)))
+                    EC.presence_of_element_located((By.XPATH, Settings._XPATH_BUTTON_)));
 
                 '''Button_click = Driver.find_element(By.XPATH, 
                                                    Settings._XPATH_BUTTON_)'''
                 
-                Button_click.click()
+                Button_click.click();
 
                 # * Interval times
-                time.sleep(self._Time_interval)
+                time.sleep(self._Time_interval);
 
                 # * Read image
                 Image = WebDriverWait(Driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, Settings._XPATH_IMAGE_)))
+                    EC.presence_of_element_located((By.XPATH, Settings._XPATH_IMAGE_)));
                 
                 '''Image = Driver.find_element(By.XPATH, 
                                             Settings._XPATH_IMAGE_)'''
                 
-                src = Image.get_attribute('src')
+                src = Image.get_attribute('src');
                 
                 # * Json file name
                 File_json = "Data_{}_{}_{}.json".format(Choices_dropdowns[1], 
                                                         Choices_dropdowns[2], 
-                                                        Choices_dropdowns[3])
+                                                        Choices_dropdowns[3]);
                 
                 File_json_folder = os.path.join(New_folder, File_json)
-                JSON_file_json_folder = os.path.join(self._JSON_folder, File_json)
+                JSON_file_json_folder = os.path.join(self._JSON_folder, File_json);
 
                 # * Name girl images
-                Image_name = "Girl_Image_{}.png".format(i)
-                Image_folder = os.path.join(New_folder, Image_name)
+                Image_name = "Girl_Image_{}.png".format(i);
+                Image_folder = os.path.join(New_folder, Image_name);
                 
                 # * Download image from website
-                urllib.request.urlretrieve(src, Image_folder)
+                urllib.request.urlretrieve(src, Image_folder);
 
                 # * Interval times
-                time.sleep(self._Time_interval)
+                time.sleep(self._Time_interval);
 
             # * Save the Json file inside each new folder created
-            JsonFileHandler.create_json_file(Data_json, File_json_folder)
-            JsonFileHandler.create_json_file(Data_json, JSON_file_json_folder)
+            JsonFileHandler.create_json_file(Data_json, File_json_folder);
+            JsonFileHandler.create_json_file(Data_json, JSON_file_json_folder);
 
         # * Close Google chrome 
-        Driver.close()
+        Driver.close();

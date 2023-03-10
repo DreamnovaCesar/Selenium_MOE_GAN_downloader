@@ -116,32 +116,32 @@ class DownloadGirlsCSV(DownloadGirlsMOE):
         """
         
         # * Instance attributes
-        self._Reader_CSV = Reader_CSV
-        self._CSV = CSV
-        self._Folder_images = Folder
+        self._Reader_CSV = Reader_CSV;
+        self._CSV = CSV;
+        self._Folder_images = Folder;
 
-        self._URL = 'https://make.girls.moe/#/'
-        self._JSON_folder = 'app\src\data\JSON'
-        self._Time_interval_chooses = 0.5
-        self._Time_interval = 0.01
-        self._implicitly = 20
-        self._Initial = 5
+        self._URL = 'https://make.girls.moe/#/';
+        self._JSON_folder = 'app\src\data\JSON';
+        self._Time_interval_chooses = 0.5;
+        self._Time_interval = 0.01;
+        self._implicitly = 20;
+        self._Initial = 5;
         
-        self._Data = Reader_CSV.Data
-        self._Attributes = Reader_CSV.Attributes
+        self._Data = Reader_CSV.Data;
+        self._Attributes = Reader_CSV.Attributes;
 
-        self._Model = Reader_CSV.Model
-        self._Hair_color = Reader_CSV.Hair_color
-        self._Hair_style = Reader_CSV.Hair_style
-        self._Eye_color = Reader_CSV.Eye_color
-        self._Dark_sin = Reader_CSV.Dark_sin
-        self._Blush = Reader_CSV.Blush
-        self._Smile = Reader_CSV.Smile
-        self._Open_mouth = Reader_CSV.Open_mouth
-        self._Hat = Reader_CSV.Hat
-        self._Ribbon = Reader_CSV.Ribbon
-        self._Glasses = Reader_CSV.Glasses
-        self._Epochs = Reader_CSV.Epochs
+        self._Model = Reader_CSV.Model;
+        self._Hair_color = Reader_CSV.Hair_color;
+        self._Hair_style = Reader_CSV.Hair_style;
+        self._Eye_color = Reader_CSV.Eye_color;
+        self._Dark_sin = Reader_CSV.Dark_sin;
+        self._Blush = Reader_CSV.Blush;
+        self._Smile = Reader_CSV.Smile;
+        self._Open_mouth = Reader_CSV.Open_mouth;
+        self._Hat = Reader_CSV.Hat;
+        self._Ribbon = Reader_CSV.Ribbon;
+        self._Glasses = Reader_CSV.Glasses;
+        self._Epochs = Reader_CSV.Epochs;
 
         self.Chrome_options = webdriver.ChromeOptions() 
         self.Chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
@@ -152,119 +152,119 @@ class DownloadGirlsCSV(DownloadGirlsMOE):
         """
 
         # * Create a dict to save every parameter
-        Data_json = {}
+        Data_json = {};
         
         # * Keys for the JSON file
-        Keys_dropdown = ('Model', 'Hair_color', 'Hair_style', 'Eye_color')
+        Keys_dropdown = ('Model', 'Hair_color', 'Hair_style', 'Eye_color');
         Keys_toggle = ('Button_toggle_0', 'Button_toggle_1', 'Button_toggle_2', 
                        'Button_toggle_3', 'Button_toggle_4', 'Button_toggle_5',
-                       'Button_toggle_6')
+                       'Button_toggle_6');
         
-        Driver = webdriver.Chrome(options = self.Chrome_options)
-        #Driver.maximize_window()
-        Driver.get(self._URL)
-        Driver.implicitly_wait(self._implicitly)
+        Driver = webdriver.Chrome(options = self.Chrome_options);
+        #Driver.maximize_window();
+        Driver.get(self._URL);
+        Driver.implicitly_wait(self._implicitly);
         
         for k in range(len(self._Data.index)):
             
             # * Interval times
-            time.sleep(self._Initial)
+            time.sleep(self._Initial);
 
             for j in range(len(Settings._XPATH_BUTTON_LIST_)):
                 
                 # * Add the Choices_dropdowns data to the dict
-                Data_json[Keys_dropdown[j]] = self._Attributes[j][k]
+                Data_json[Keys_dropdown[j]] = self._Attributes[j][k];
 
                 Drop_down_model = Dropdown(Driver, 
                                            Settings._XPATH_BUTTON_LIST_[j], 
-                                           Settings._XPATH_OPEN_LIST_[j])
+                                           Settings._XPATH_OPEN_LIST_[j]);
 
-                Drop_down_model.select_option(self._Attributes[j][k])
+                Drop_down_model.select_option(self._Attributes[j][k]);
 
                 # * Interval times
-                time.sleep(self._Time_interval_chooses) 
+                time.sleep(self._Time_interval_chooses);
 
             if(self._Model == 'Amaryllis 128x128 Ver.170716 (3.8MB)'):
-                Settings._XPATH_OFF_BUTTON_.pop()
-                Settings._XPATH_RANDOM_BUTTON_.pop()
-                Settings._XPATH_ON_BUTTON_.pop()
+                Settings._XPATH_OFF_BUTTON_.pop();
+                Settings._XPATH_RANDOM_BUTTON_.pop();
+                Settings._XPATH_ON_BUTTON_.pop();
 
             # * Function on off used
             for n in range(len(Settings._XPATH_OFF_BUTTON_)):
                 
                 # * Add the toggle data to the dict
-                Data_json[Keys_toggle[n]] = self._Attributes[n + len(Settings._XPATH_BUTTON_LIST_)][k]
+                Data_json[Keys_toggle[n]] = self._Attributes[n + len(Settings._XPATH_BUTTON_LIST_)][k];
 
                 ON_OFF_event = OnOffEvent(Driver, 
                                           Settings._XPATH_ON_BUTTON_[n], 
                                           Settings._XPATH_RANDOM_BUTTON_[n], 
-                                          Settings._XPATH_OFF_BUTTON_[n])
+                                          Settings._XPATH_OFF_BUTTON_[n]);
 
-                ON_OFF_event.select_option(self._Attributes[n + len(Settings._XPATH_BUTTON_LIST_)][k])
+                ON_OFF_event.select_option(self._Attributes[n + len(Settings._XPATH_BUTTON_LIST_)][k]);
             
             # * Path name
             New_folder = '{}/Girl_{}_{}_{}'.format(self._Folder_images, 
                                                 self._Hair_color[k], 
                                                 self._Hair_style[k], 
-                                                self._Eye_color[k])
+                                                self._Eye_color[k]);
             # * Path exist
-            Exist_dir = os.path.isdir(New_folder) 
+            Exist_dir = os.path.isdir(New_folder);
 
-            if Exist_dir == False:
-                os.mkdir(New_folder)
+            if(Exist_dir) == False:
+                os.mkdir(New_folder);
             else:
-                New_folder
+                New_folder;
 
             # * Interval times
-            time.sleep(self._Initial)
+            time.sleep(self._Initial);
 
             # * Instance epoch
             for i in range(self._Epochs[k]):
                 
                 # * Waits until the search box is present on the page
                 Button_click = WebDriverWait(Driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, Settings._XPATH_BUTTON_)))
+                    EC.presence_of_element_located((By.XPATH, Settings._XPATH_BUTTON_)));
 
                 '''Button_click = Driver.find_element(By.XPATH, 
                                                    Settings._XPATH_BUTTON_)'''
                 
-                Button_click.click()
+                Button_click.click();
 
                 # * Interval times
-                time.sleep(self._Time_interval)
+                time.sleep(self._Time_interval);
 
                 # * Read image
                 Image = WebDriverWait(Driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, Settings._XPATH_IMAGE_)))
+                    EC.presence_of_element_located((By.XPATH, Settings._XPATH_IMAGE_)));
                 
                 '''Image = Driver.find_element(By.XPATH, 
                                             Settings._XPATH_IMAGE_)
                 
                 Image1 = Driver.find_element(By.XPATH, Settings._XPATH_IMAGE_);'''
 
-                src = Image.get_attribute('src')
+                src = Image.get_attribute('src');
                 
                 # * Json file name
                 File_json = "Data_{}_{}_{}.json".format(self._Hair_color[k], 
                                                         self._Hair_style[k], 
-                                                        self._Eye_color[k])
+                                                        self._Eye_color[k]);
                 
-                File_json_folder = os.path.join(New_folder, File_json)
-                JSON_file_json_folder = os.path.join(self._JSON_folder, File_json)
+                File_json_folder = os.path.join(New_folder, File_json);
+                JSON_file_json_folder = os.path.join(self._JSON_folder, File_json);
 
                 # * Name girl images
-                Image_name = "Girl_Image_{}.png".format(i)
-                Image_folder = os.path.join(New_folder, Image_name)
+                Image_name = "Girl_Image_{}.png".format(i);
+                Image_folder = os.path.join(New_folder, Image_name);
                 
                 # * Download image from website
-                urllib.request.urlretrieve(src, Image_folder)
+                urllib.request.urlretrieve(src, Image_folder);
 
                 # * Interval times
-                time.sleep(self._Time_interval)
+                time.sleep(self._Time_interval);
 
             # * Save the Json file inside each new folder created
-            JsonFileHandler.create_json_file(Data_json, File_json_folder)
-            JsonFileHandler.create_json_file(Data_json, JSON_file_json_folder)
+            JsonFileHandler.create_json_file(Data_json, File_json_folder);
+            JsonFileHandler.create_json_file(Data_json, JSON_file_json_folder);
 
         # * Close Google chrome 
-        Driver.close()
+        Driver.close();

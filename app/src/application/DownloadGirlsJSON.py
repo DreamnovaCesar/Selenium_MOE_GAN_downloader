@@ -97,35 +97,35 @@ class DownloadGirlsJSON(DownloadGirlsMOE):
         """
 
         # * Instance attributes
-        self._Folder_images = Folder
-        self._JSON_file = JSON_file
-        self._Epochs = int(Epochs)
+        self._Folder_images = Folder;
+        self._JSON_file = JSON_file;
+        self._Epochs = int(Epochs);
 
-        self._URL = 'https://make.girls.moe/#/'
-        self._Time_interval_chooses = 0.5
-        self._Time_interval = 0.01
-        self._implicitly = 20
-        self._Initial = 5
+        self._URL = 'https://make.girls.moe/#/';
+        self._Time_interval_chooses = 0.5;
+        self._Time_interval = 0.01;
+        self._implicitly = 20;
+        self._Initial = 5;
         
         # * list out keys and values separately
-        self._JSON_file_keys_list = list(self._JSON_file.keys())
-        self._JSON_file_vals_list = list(self._JSON_file.values())
+        self._JSON_file_keys_list = list(self._JSON_file.keys());
+        self._JSON_file_vals_list = list(self._JSON_file.values());
 
-        self.Chrome_options = webdriver.ChromeOptions() 
-        self.Chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        self.Chrome_options = webdriver.ChromeOptions();
+        self.Chrome_options.add_experimental_option('excludeSwitches', ['enable-logging']);
 
     def Download_images(self) -> None:
         """
         Downloads images of waifus with specified attributes from the MakeGirlsMoe website.
         """
 
-        Driver = webdriver.Chrome(options = self.Chrome_options)
-        #Driver.maximize_window()
-        Driver.get(self._URL)
-        Driver.implicitly_wait(self._implicitly)
+        Driver = webdriver.Chrome(options = self.Chrome_options);
+        #Driver.maximize_window();
+        Driver.get(self._URL);
+        Driver.implicitly_wait(self._implicitly);
         
         # * Interval times
-        time.sleep(self._Initial)
+        time.sleep(self._Initial);
 
         for j in range(len(Settings._XPATH_BUTTON_LIST_)):
 
@@ -136,12 +136,12 @@ class DownloadGirlsJSON(DownloadGirlsMOE):
             Drop_down_model.select_option(self._JSON_file_vals_list[j])
 
             # * Interval times
-            time.sleep(self._Time_interval_chooses) 
+            time.sleep(self._Time_interval_chooses); 
 
         if(self._JSON_file_vals_list[0] == 'Amaryllis 128x128 Ver.170716 (3.8MB)'):
-            Settings._XPATH_OFF_BUTTON_.pop()
-            Settings._XPATH_RANDOM_BUTTON_.pop()
-            Settings._XPATH_ON_BUTTON_.pop()
+            Settings._XPATH_OFF_BUTTON_.pop();
+            Settings._XPATH_RANDOM_BUTTON_.pop();
+            Settings._XPATH_ON_BUTTON_.pop();
 
         # * Function on off used
         for n in range(len(Settings._XPATH_OFF_BUTTON_)):
@@ -151,69 +151,69 @@ class DownloadGirlsJSON(DownloadGirlsMOE):
                                         Settings._XPATH_RANDOM_BUTTON_[n], 
                                         Settings._XPATH_OFF_BUTTON_[n])
 
-            ON_OFF_event.select_option(self._JSON_file_vals_list[n + len(Settings._XPATH_BUTTON_LIST_)])
+            ON_OFF_event.select_option(self._JSON_file_vals_list[n + len(Settings._XPATH_BUTTON_LIST_)]);
         
         # * Path name
         New_folder = '{}/Girl_{}_{}_{}'.format(self._Folder_images, 
                                                     self._JSON_file_vals_list[1], 
                                                     self._JSON_file_vals_list[2], 
-                                                    self._JSON_file_vals_list[3])
+                                                    self._JSON_file_vals_list[3]);
         # * Path exist
-        Exist_dir = os.path.isdir(New_folder) 
+        Exist_dir = os.path.isdir(New_folder);
 
-        if Exist_dir == False:
-            os.mkdir(New_folder)
+        if(Exist_dir) == False:
+            os.mkdir(New_folder);
         else:
-            New_folder
+            New_folder;
             
         # * Interval times
-        time.sleep(self._Initial)
+        time.sleep(self._Initial);
 
         # * Instance epoch
         for i in range(self._Epochs):
             
             # * Waits until the search box is present on the page
             Button_click = WebDriverWait(Driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, Settings._XPATH_BUTTON_)))
+                EC.presence_of_element_located((By.XPATH, Settings._XPATH_BUTTON_)));
 
             '''Button_click = Driver.find_element(By.XPATH, 
                                                 Settings._XPATH_BUTTON_)'''
             
-            Button_click.click()
+            Button_click.click();
 
             # * Interval times
-            time.sleep(self._Time_interval)
+            time.sleep(self._Time_interval);
 
             # * Read image
             Image = WebDriverWait(Driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, Settings._XPATH_IMAGE_)))
+                EC.presence_of_element_located((By.XPATH, Settings._XPATH_IMAGE_)));
             
             '''Image = Driver.find_element(By.XPATH, 
                                         Settings._XPATH_IMAGE_)
             
             Image1 = Driver.find_element(By.XPATH, Settings._XPATH_IMAGE_);'''
 
-            src = Image.get_attribute('src')
+            src = Image.get_attribute('src');
             
             # * Json file name
             File_json = "Data_{}_{}_{}.json".format(self._JSON_file_vals_list[1], 
                                                     self._JSON_file_vals_list[2], 
-                                                    self._JSON_file_vals_list[3])
+                                                    self._JSON_file_vals_list[3]);
             
-            File_json_folder = os.path.join(New_folder, File_json)
+            File_json_folder = os.path.join(New_folder, File_json);
 
             # * Name girl images
-            Image_name = "Girl_Image_{}.png".format(i)
-            Image_folder = os.path.join(New_folder, Image_name)
+            Image_name = "Girl_Image_{}.png".format(i);
+            Image_folder = os.path.join(New_folder, Image_name);
             
             # * Download image from website
-            urllib.request.urlretrieve(src, Image_folder)
+            urllib.request.urlretrieve(src, Image_folder);
 
             # * Interval times
-            time.sleep(self._Time_interval)
+            time.sleep(self._Time_interval);
 
         # * Save the Json file inside each new folder created
-        JsonFileHandler.create_json_file(self._JSON_file, File_json_folder)
+        JsonFileHandler.create_json_file(self._JSON_file, File_json_folder);
 
         # * Close Google chrome 
-        Driver.close()
+        Driver.close();
