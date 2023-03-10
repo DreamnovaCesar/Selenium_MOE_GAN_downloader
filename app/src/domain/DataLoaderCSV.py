@@ -2,7 +2,6 @@
 import pandas as pd
 
 class DataLoaderCSV(object):
-
     """
     A class for loading data from a CSV file.
 

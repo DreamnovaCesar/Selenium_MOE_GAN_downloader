@@ -1,14 +1,9 @@
 
 import os
 import time
-import string
 import random
-import pandas as pd
 
 import urllib.request
-
-from .Decorators.Timer import Timer
-from .Decorators.Singleton import Singleton
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -19,13 +14,12 @@ from selenium.webdriver.support import expected_conditions as EC
 #from memory_profiler import memory_usage
 #from memory_profiler import profile
 
-from .DropDown import Dropdown
-from .OnOFFEvent import OnOffEvent
-from .DataLoaderCSV import DataLoaderCSV
+from ..domain.Json.JsonFileHander import JsonFileHandler
+from ..domain.DropDown import Dropdown
+from ..domain.OnOFFEvent import OnOffEvent
+
 from .DownloadGirlsMOE import DownloadGirlsMOE
 from ..Utilities import Settings
-
-from typing import Optional
 
 class DownloadGirlsRandom(DownloadGirlsMOE):
     """
@@ -82,7 +76,8 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
     def __init__(self, 
                  Folder: str, 
                  Number_images : int = 20,
-                 Number_folders : int = 2) -> None:
+                 Number_folders : int = 2
+                 ) -> None:
 
         """
         Initializes a new DownloadGirlsRandom instance.
@@ -99,10 +94,11 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
 
         # * Instance attributes
         self._Folder_images = Folder
-        self._Number_images = Number_images
-        self._Number_folders = Number_folders
+        self._Number_images = int(Number_images)
+        self._Number_folders = int(Number_folders)
 
         self._URL = 'https://make.girls.moe/#/'
+        self._JSON_folder = 'app\src\data\JSON'
         self._Time_interval_chooses = 0.5
         self._Time_interval = 0.01
         self._implicitly = 20
@@ -111,7 +107,6 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
         self.Chrome_options = webdriver.ChromeOptions() 
         self.Chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
-
     def Download_images(self) -> None:
         """
         Downloads images of waifus with specified attributes from the MakeGirlsMoe website.
@@ -119,7 +114,16 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
 
         # * Create lists of dropdown options for each attribute
         Dropdowns = []
+
+        # * Create a dict to save every parameter
+        Data_json = {}
         
+        # * Keys for the JSON file
+        Keys_dropdown = ('Model', 'Hair_color', 'Hair_style', 'Eye_color')
+        Keys_toggle = ('Button_toggle_0', 'Button_toggle_1', 'Button_toggle_2', 
+                       'Button_toggle_3', 'Button_toggle_4', 'Button_toggle_5',
+                       'Button_toggle_6')
+
         self.Models = ('Amaryllis 128x128 Ver.170716 (3.8MB)', 
                        'Bouvardia 128x128 Ver.171123 (9.8MB)', 
                        'Bouvardia 256x256 Ver.171125 (9.9MB)', 
@@ -194,13 +198,16 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
 
                     Choices_dropdowns.append(random.choice(Dropdowns[l]))
 
+                    # * Add the Choices_dropdowns data to the dict
+                    Data_json[Keys_dropdown[l]] = Choices_dropdowns[l]
+
                 # * Select the chosen option for the dropdown
                 Drop_down_model = Dropdown(Driver, 
                                            Settings._XPATH_BUTTON_LIST_[j], 
                                            Settings._XPATH_OPEN_LIST_[j])
 
                 Drop_down_model.select_option(Choices_dropdowns[j])    
-
+    
                 # * Interval times
                 time.sleep(self._Time_interval_chooses)   
 
@@ -215,6 +222,9 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
                 
                 # * Select a randomly chosen toggle option
                 Toggle = random.choice(self.Toggle)
+                
+                # * Add the toggle data to the dict
+                Data_json[Keys_toggle[j]] = Toggle
 
                 # * Click the corresponding toggle button
                 ON_OFF_event = OnOffEvent(Driver, 
@@ -223,6 +233,20 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
                                           Settings._XPATH_ON_BUTTON_[j])
 
                 ON_OFF_event.select_option(Toggle)
+
+            # * Path name
+            New_folder = '{}/Girl_{}_{}_{}'.format(self._Folder_images,
+                                                Choices_dropdowns[1], 
+                                                Choices_dropdowns[2], 
+                                                Choices_dropdowns[3])
+
+            # * Path exist
+            Exist_dir = os.path.isdir(New_folder) 
+
+            if Exist_dir == False:
+                os.mkdir(New_folder)
+            else:
+                New_folder
 
             # * Interval times
             time.sleep(self._Initial)
@@ -251,18 +275,13 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
                 
                 src = Image.get_attribute('src')
                 
-                New_folder = '{}/Girl_{}_{}_{}'.format(self._Folder_images,
-                                                        Choices_dropdowns[1], 
+                # * Json file name
+                File_json = "Data_{}_{}_{}.json".format(Choices_dropdowns[1], 
                                                         Choices_dropdowns[2], 
                                                         Choices_dropdowns[3])
-
-                # * Direction exist
-                Exist_dir = os.path.isdir(New_folder) 
-
-                if Exist_dir == False:
-                    os.mkdir(New_folder)
-                else:
-                    New_folder
+                
+                File_json_folder = os.path.join(New_folder, File_json)
+                JSON_file_json_folder = os.path.join(self._JSON_folder, File_json)
 
                 # * Name girl images
                 Image_name = "Girl_Image_{}.png".format(i)
@@ -273,6 +292,10 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
 
                 # * Interval times
                 time.sleep(self._Time_interval)
+
+            # * Save the Json file inside each new folder created
+            JsonFileHandler.create_json_file(Data_json, File_json_folder)
+            JsonFileHandler.create_json_file(Data_json, JSON_file_json_folder)
 
         # * Close Google chrome 
         Driver.close()

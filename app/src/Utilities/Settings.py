@@ -71,6 +71,7 @@ _XPATH_6_ON_BUTTON_ = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[2]/div/
 _XPATH_IMAGE_ = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[1]/div/div[1]/div/div/img'
 _XPATH_BUTTON_ = '//*[@id="root"]/div/div/div/div/div[1]/div[2]/div[1]/div/button'
 
+_RELATIVE_PATH_DATA_ = 'app\src\data'
 
 '''_XPATH_BUTTON_LIST_ = [_XPATH_HAIR_COLOR_BUTTON_, 
                        _XPATH_HAIR_STYLE_BUTTON_, 

@@ -87,24 +87,3 @@ class Dropdown(object):
         # * Click the selected option
         Options[Option_index].click()
         
-        '''list_options = []
-
-        # * Find the dropdown button and click it again to hide the options
-        button = self.driver.find_element(By.XPATH, self.xpath_path)
-        button.click()
-        button_dropdown = self.driver.find_elements(By.XPATH, self.xpath_path_list)
-        
-        # * Find the span elements inside each option and add them to the list of options
-        for i, _ in enumerate(button_dropdown):
-            options = button_dropdown[i].find_elements(By.TAG_NAME, 'span')
-
-        for i, option in enumerate(options):
-            list_options.append(option.text)
-        
-        # * Find the index of the selected option in the updated list of options
-        option_index = list_options.index(option_picked)
-        
-        print('/// {}'.format(option_picked))
-
-        # * Click the selected option again to confirm the selection
-        options[option_index].click()'''
