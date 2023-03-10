@@ -100,7 +100,7 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
         self._URL = 'https://make.girls.moe/#/';
         self._JSON_folder = 'app\src\data\JSON';
         self._Time_interval_chooses = 0.5;
-        self._Time_interval = 0.01;
+        self._Time_interval = 0.1;
         self._implicitly = 20;
         self._Initial = 5;
         
@@ -248,6 +248,11 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
             else:
                 New_folder;
 
+            # * Json file name
+            File_json = "Data_{}_{}_{}.json".format(Choices_dropdowns[1], 
+                                                    Choices_dropdowns[2], 
+                                                    Choices_dropdowns[3]);
+            
             # * Interval times
             time.sleep(self._Initial);
 
@@ -274,14 +279,9 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
                                             Settings._XPATH_IMAGE_)'''
                 
                 src = Image.get_attribute('src');
-                
-                # * Json file name
-                File_json = "Data_{}_{}_{}.json".format(Choices_dropdowns[1], 
-                                                        Choices_dropdowns[2], 
-                                                        Choices_dropdowns[3]);
-                
-                File_json_folder = os.path.join(New_folder, File_json)
-                JSON_file_json_folder = os.path.join(self._JSON_folder, File_json);
+
+                # * Interval times
+                time.sleep(self._Time_interval);
 
                 # * Name girl images
                 Image_name = "Girl_Image_{}.png".format(i);
@@ -292,7 +292,11 @@ class DownloadGirlsRandom(DownloadGirlsMOE):
 
                 # * Interval times
                 time.sleep(self._Time_interval);
-
+            
+            # * Create path for the JSON file
+            File_json_folder = os.path.join(New_folder, File_json)
+            JSON_file_json_folder = os.path.join(self._JSON_folder, File_json);
+            
             # * Save the Json file inside each new folder created
             JsonFileHandler.create_json_file(Data_json, File_json_folder);
             JsonFileHandler.create_json_file(Data_json, JSON_file_json_folder);

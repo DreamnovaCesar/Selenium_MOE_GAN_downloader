@@ -103,9 +103,9 @@ class DownloadGirlsJSON(DownloadGirlsMOE):
 
         self._URL = 'https://make.girls.moe/#/';
         self._Time_interval_chooses = 0.5;
-        self._Time_interval = 0.01;
+        self._Time_interval = 0.2;
         self._implicitly = 20;
-        self._Initial = 5;
+        self._Initial = 3;
         
         # * list out keys and values separately
         self._JSON_file_keys_list = list(self._JSON_file.keys());
@@ -165,13 +165,18 @@ class DownloadGirlsJSON(DownloadGirlsMOE):
             os.mkdir(New_folder);
         else:
             New_folder;
-            
+        
+        # * Json file name
+        File_json = "Data_{}_{}_{}.json".format(self._JSON_file_vals_list[1], 
+                                                self._JSON_file_vals_list[2], 
+                                                self._JSON_file_vals_list[3]);
+        
         # * Interval times
         time.sleep(self._Initial);
 
         # * Instance epoch
         for i in range(self._Epochs):
-            
+               
             # * Waits until the search box is present on the page
             Button_click = WebDriverWait(Driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, Settings._XPATH_BUTTON_)));
@@ -195,12 +200,8 @@ class DownloadGirlsJSON(DownloadGirlsMOE):
 
             src = Image.get_attribute('src');
             
-            # * Json file name
-            File_json = "Data_{}_{}_{}.json".format(self._JSON_file_vals_list[1], 
-                                                    self._JSON_file_vals_list[2], 
-                                                    self._JSON_file_vals_list[3]);
-            
-            File_json_folder = os.path.join(New_folder, File_json);
+            # * Interval times
+            time.sleep(self._Time_interval);
 
             # * Name girl images
             Image_name = "Girl_Image_{}.png".format(i);
@@ -211,6 +212,9 @@ class DownloadGirlsJSON(DownloadGirlsMOE):
 
             # * Interval times
             time.sleep(self._Time_interval);
+
+        # * Create path for the JSON file
+        File_json_folder = os.path.join(New_folder, File_json);
 
         # * Save the Json file inside each new folder created
         JsonFileHandler.create_json_file(self._JSON_file, File_json_folder);

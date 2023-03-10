@@ -123,9 +123,9 @@ class DownloadGirlsCSV(DownloadGirlsMOE):
         self._URL = 'https://make.girls.moe/#/';
         self._JSON_folder = 'app\src\data\JSON';
         self._Time_interval_chooses = 0.5;
-        self._Time_interval = 0.01;
+        self._Time_interval = 0.1;
         self._implicitly = 20;
-        self._Initial = 5;
+        self._Initial = 3;
         
         self._Data = Reader_CSV.Data;
         self._Attributes = Reader_CSV.Attributes;
@@ -207,6 +207,7 @@ class DownloadGirlsCSV(DownloadGirlsMOE):
                                                 self._Hair_color[k], 
                                                 self._Hair_style[k], 
                                                 self._Eye_color[k]);
+            
             # * Path exist
             Exist_dir = os.path.isdir(New_folder);
 
@@ -215,12 +216,18 @@ class DownloadGirlsCSV(DownloadGirlsMOE):
             else:
                 New_folder;
 
+            # * Json file name
+            File_json = "Data_{}_{}_{}.json".format(self._Hair_color[k], 
+                                                    self._Hair_style[k], 
+                                                    self._Eye_color[k]);
+            
             # * Interval times
             time.sleep(self._Initial);
 
             # * Instance epoch
             for i in range(self._Epochs[k]):
-                
+            
+
                 # * Waits until the search box is present on the page
                 Button_click = WebDriverWait(Driver, 10).until(
                     EC.presence_of_element_located((By.XPATH, Settings._XPATH_BUTTON_)));
@@ -243,14 +250,9 @@ class DownloadGirlsCSV(DownloadGirlsMOE):
                 Image1 = Driver.find_element(By.XPATH, Settings._XPATH_IMAGE_);'''
 
                 src = Image.get_attribute('src');
-                
-                # * Json file name
-                File_json = "Data_{}_{}_{}.json".format(self._Hair_color[k], 
-                                                        self._Hair_style[k], 
-                                                        self._Eye_color[k]);
-                
-                File_json_folder = os.path.join(New_folder, File_json);
-                JSON_file_json_folder = os.path.join(self._JSON_folder, File_json);
+
+                # * Interval times
+                time.sleep(self._Time_interval);
 
                 # * Name girl images
                 Image_name = "Girl_Image_{}.png".format(i);
@@ -262,6 +264,10 @@ class DownloadGirlsCSV(DownloadGirlsMOE):
                 # * Interval times
                 time.sleep(self._Time_interval);
 
+            # * Create path for the JSON file
+            File_json_folder = os.path.join(New_folder, File_json);
+            JSON_file_json_folder = os.path.join(self._JSON_folder, File_json);
+            
             # * Save the Json file inside each new folder created
             JsonFileHandler.create_json_file(Data_json, File_json_folder);
             JsonFileHandler.create_json_file(Data_json, JSON_file_json_folder);
