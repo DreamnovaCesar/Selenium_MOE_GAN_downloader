@@ -54,22 +54,8 @@ when creating the virtual environment, as this algorithm does not plan to be a l
 python -m app.src.main
 ```
 
-$ ./tree-md .
-# Project tree
+$ tree -d
 
-.
- * [tree-md](./tree-md)
- * [dir2](./dir2)
-   * [file21.ext](./dir2/file21.ext)
-   * [file22.ext](./dir2/file22.ext)
-   * [file23.ext](./dir2/file23.ext)
- * [dir1](./dir1)
-   * [file11.ext](./dir1/file11.ext)
-   * [file12.ext](./dir1/file12.ext)
- * [file_in_root.ext](./file_in_root.ext)
- * [README.md](./README.md)
- * [dir3](./dir3)
- 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Connect with me
