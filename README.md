@@ -32,7 +32,7 @@ Open the Anaconda Prompt by clicking the Start button and typing "Anaconda Promp
 Type the following command to create a new virtual environment called "tfenv":
 
 ```python
-conda create --name tfenv
+conda create --name tfenv python=3.11
 ```
 
 Activate the virtual environment by typing:
@@ -44,7 +44,7 @@ conda activate tfenv
 Finally, install requirements.txt.
 
 ```python
-conda install requirements.txt
+pip install -r requirements.txt
 ```
 
 when creating the virtual environment, as this algorithm does not plan to be a library at the moment. You will have to use the following CLI code for activation:
